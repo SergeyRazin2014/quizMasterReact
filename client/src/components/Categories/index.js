@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Nod } from 'src/components/Categories/common/Nod';
 import { Tree } from 'antd';
@@ -9,30 +9,23 @@ import { types } from 'src/redux/reducers/types';
 
 const { TreeNode } = Tree;
 
+const quizTest = [{ id: 1, name: 'Понос' }, { id: 2, name: 'Запор' }, { id: 3, name: 'Хроническая усталость' }];
+
 const createTestCategoryes = () => {
-	const root = new Nod('root');
-	root.id = 1;
-	const adult = new Nod('Взрослый');
-	adult.id = 2;
+	const root = new Nod({ id: 1, name: 'root' });
+	const adult = new Nod({ id: 2, name: 'Взрослый' });
 
-	const baby = new Nod('Ребенок');
-	baby.id = 3;
-	const babyBeforYear = new Nod('Младенец до года');
-	babyBeforYear.id = 4;
-	const babyAfterYear = new Nod('Дети старше года');
-	babyAfterYear.id = 5;
-	const teenagers = new Nod('Подросток');
-	teenagers.id = 6;
+	const baby = new Nod({ id: 3, name: 'Ребенок' });
+	const babyBeforYear = new Nod({ id: 3, name: 'Младенец до года' });
+	const babyAfterYear = new Nod({ id: 4, name: 'Дети старше года' });
+	const teenagers = new Nod({ id: 5, name: 'Подросток' });
 
-	const man = new Nod('Мужчина');
-	man.id = 7;
-	const commonProblems = new Nod('Проблемы общего характера');
-	commonProblems.id = 8;
-	const sexProblem = new Nod('Проблемы секса');
-	sexProblem.id = 9;
+	const man = new Nod({ id: 6, name: 'Мужчина' });
+	const commonProblems = new Nod({ id: 7, name: 'Проблемы общего характера' });
+	commonProblems.quizIds = [1, 2, 3];
+	const sexProblem = new Nod({ id: 8, name: 'Проблемы секса' });
 
-	const woman = new Nod('Женщина');
-	woman.id = 10;
+	const woman = new Nod({ id: 9, name: 'Женщина' });
 
 	root.add(baby);
 
@@ -55,8 +48,12 @@ const createTestCategoryes = () => {
 	return root;
 };
 
+
+
 const Categories = () => {
 	const rootCategory = createTestCategoryes();
+
+
 
 	const renderCategories = (rootCategory) => {
 		return (
@@ -73,8 +70,15 @@ const Categories = () => {
 	return (
 
 		<Tree
-			onSelect={e => {
-				dispatch({ type: types.SELECT_CATEGORY_ID, payload: 'categoryTest' });
+			onSelect={selectedCategoriesIds => {
+				const categoryId = selectedCategoriesIds[0];
+				const category = rootCategory.findByIdDeep({ id: categoryId })[0];
+				dispatch({ type: types.SELECT_CATEGORY, payload: category });
+
+				const quizes = quizTest.filter(x => category.quizIds && category.quizIds.some(y => y == x.id));
+				dispatch({ type: types.SELECT_QUIZ, payload: quizes });
+
+
 			}}
 
 		>

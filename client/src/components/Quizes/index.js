@@ -14,10 +14,9 @@ const renderItem = (item) => {
 };
 
 // список тестов
-const Quizes = () => {
+const Quizes = ({ quizList }) => {
 
-    const selectedCategoryId = useSelectedCategoryId();
-    debugger;
+
 
     return (
         <List

@@ -1,5 +1,6 @@
 export class Nod {
-	constructor(name) {
+	constructor({ id, name }) {
+		this.id = id;
 		this.name = name;
 		this.children = [];
 
@@ -27,25 +28,52 @@ export class Nod {
 		};
 
 		// найти узел в текущем узле по имени
-		this.findByName = (name) => {
+		this.findByName = ({ name }) => {
 			const result = this.children.filter((x) => x.name === name);
 			return result;
 		};
 
 		// найти узлы по имени во всем дереве
-		this.findByNameDeep = (name) => {
-			let result = this.children.filter((x) => x.name === name);
+		this.findByNameDeep = ({ name }) => {
+			let result = this.findByName({ name });
 
 			for (let i = 0; i < this.children.length; i++) {
 				const node = this.children[i];
 
-				const findBynameChild = node.findByNameDeep(name);
+				const finded = node.findByNameDeep({ name });
 
-				if (findBynameChild) {
-					result = [...result, ...node.findByNameDeep(name)];
-					return result;
+				if (finded && finded.length) {
+					result = [...result, ...finded];
 				}
+			}
+
+			if (result.length) {
 				return result;
+			}
+
+			return null;
+		};
+
+		// найти узел по id в текущем узле
+		this.findById = ({ id }) => {
+			const result = this.children.filter((x) => x.id == id);
+			return result;
+		};
+
+		// найти узел по id во всем дереве
+		this.findByIdDeep = ({ id }) => {
+			// ищем в себе
+			let result = this.findById({ id });
+
+			// ищем в каждом дитеныше
+			for (let i = 0; i < this.children.length; i++) {
+				const node = this.children[i];
+
+				const finded = node.findByIdDeep({ id });
+
+				if (finded && finded.length) {
+					result = [...result, ...finded];
+				}
 			}
 
 			if (result.length) {
@@ -56,20 +84,3 @@ export class Nod {
 		};
 	}
 }
-
-const main = new Nod('main');
-const node1 = new Nod('node1');
-const node11 = new Nod('node11');
-const node2 = new Nod('node2');
-const node22 = new Nod('node11');
-
-node1.add(node2);
-node1.add(node22);
-main.add(node1);
-main.add(node11);
-
-const findResult = main.findByNameDeep('node11');
-
-const josn = JSON.stringify(main);
-
-console.log(main);

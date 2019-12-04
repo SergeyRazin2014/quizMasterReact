@@ -1,23 +1,23 @@
 import { useSelector } from 'react-redux';
 import { types } from './types';
 
-// получить выбранную категорию
-export const useSelectedCategoryId = () => {
+// получить выбранные тесты
+export const useSelectedQuizes = () => {
     const result = useSelector((store) => {
-        return store.categoryReducer.selectedCategory;
+        return store.quizReducer.selectedQuiz;
     });
     return result;
 }
 
-const initialState = { category: null }
+const initialState = { selectedQuiz: null }
 
 // редюсер
 export default (state = initialState, action) => {
     const { type, payload } = action;
 
     switch (type) {
-        case types.SELECT_CATEGORY:
-            return { ...state, selectedCategory: payload };
+        case types.SELECT_QUIZ:
+            return { ...state, selectedQuiz: payload };
         default: return state;
     }
 };
