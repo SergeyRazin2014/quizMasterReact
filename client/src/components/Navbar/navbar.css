@@ -1,0 +1,15 @@
+/* .custom .ant-layout-header
+{
+  background: #7dbcea;
+  color: #fff;
+} */
+
+.custom.ant-layout-header
+{
+  display: flex;
+  justify-content: space-between;
+}
+
+.navItem{
+  display: inline-block;
+}

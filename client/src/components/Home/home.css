@@ -1,0 +1,14 @@
+.home-block-wrapper{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.home-block-wrapper p{
+    margin:0;
+    padding:0;
+}
+
+.home-img-wrapper img{
+    min-width: 100%;
+}
