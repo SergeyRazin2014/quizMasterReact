@@ -71,6 +71,11 @@ const Categories = () => {
 
 		<Tree
 			onSelect={selectedCategoriesIds => {
+
+				if (!selectedCategoriesIds || !selectedCategoriesIds.length) {
+					return;
+				}
+
 				const categoryId = selectedCategoriesIds[0];
 				const category = rootCategory.findByIdDeep({ id: categoryId })[0];
 				dispatch({ type: types.SELECT_CATEGORY, payload: category });

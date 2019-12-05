@@ -56,12 +56,22 @@ export class Nod {
 
 		// найти узел по id в текущем узле
 		this.findById = ({ id }) => {
-			const result = this.children.filter((x) => x.id == id);
-			return result;
+			const result = [];
+			if (this.id == id) {
+				result.push(this);
+			}
+			const findChildren = this.children.filter((x) => x.id == id);
+
+			return [...result, ...findChildren];
 		};
 
 		// найти узел по id во всем дереве
 		this.findByIdDeep = ({ id }) => {
+
+			if (!id) {
+				return [];
+			}
+
 			// ищем в себе
 			let result = this.findById({ id });
 

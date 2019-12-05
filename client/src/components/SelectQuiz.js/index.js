@@ -5,10 +5,11 @@ import { Row, Col } from 'antd';
 import { useSelectedQuizes } from '../../redux/reducers/quizReducer';
 import './index.css';
 
-const SelectQuiz = ({ selectedQuiz }) => {
+const SelectQuiz = () => {
 
-    selectedQuiz = useSelectedQuizes();
-    debugger;
+    const selectedQuiz = useSelectedQuizes();
+
+    const isShowQuizList = !!(selectedQuiz && selectedQuiz.length);
 
     return (
         <div className='selectQuizWrapper'>
@@ -16,7 +17,7 @@ const SelectQuiz = ({ selectedQuiz }) => {
                 <Col span={12}>
                     <Categories />
                 </Col>
-                {selectedQuiz && selectedQuiz.length && <Col span={12}>
+                {isShowQuizList && <Col span={12}>
                     <Quizes quizList={selectedQuiz} />
                 </Col>}
             </Row>

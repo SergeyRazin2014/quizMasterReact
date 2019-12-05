@@ -15,7 +15,9 @@ const renderItem = (item) => {
 
 // список тестов
 const Quizes = ({ quizList }) => {
-
+    if (!quizList || !quizList.length) {
+        return null;
+    }
 
 
     return (
