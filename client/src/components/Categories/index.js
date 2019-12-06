@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Nod } from 'src/components/Categories/common/Nod';
 import { Tree } from 'antd';
+import { useRootCategory } from 'src/useCases/useRootCategory';
+
+// C:\AAA\MyProjects\quizMasterReact\client\src\useCases\useRootCategory.js
 
 import 'antd/dist/antd.css';
 import './category.css';
@@ -49,10 +52,14 @@ const createTestCategoryes = () => {
 };
 
 
-
 const Categories = () => {
-	const rootCategory = createTestCategoryes();
 
+	const dispatch = useDispatch();
+	const { rootCategory, isLoaded } = useRootCategory();
+
+	if (!isLoaded) {
+		return 'LOADING...';
+	}
 
 
 	const renderCategories = (rootCategory) => {
@@ -65,7 +72,7 @@ const Categories = () => {
 
 	const categoriesElements = renderCategories(rootCategory);
 
-	const dispatch = useDispatch();
+	
 
 	return (
 
@@ -82,8 +89,6 @@ const Categories = () => {
 
 				const quizes = quizTest.filter(x => category.quizIds && category.quizIds.some(y => y == x.id));
 				dispatch({ type: types.SELECT_QUIZ, payload: quizes });
-
-
 			}}
 
 		>
