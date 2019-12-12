@@ -8,7 +8,9 @@ module.exports = router;
 
 router.get('/', homeController.getHome);
 
-router.get('/getQuiz/:number', quizController.getQuizByNumber);
+router.get('/getQuizByNumber/:number', quizController.getQuizByNumber);
 router.post('/addQuiz', quizController.addQiuz);
+router.get('/getQuizById/:id', quizController.getQuizById);
+router.get('/getQuizTitles', quizController.getQuizTitles);
 
 router.get('/categories', categoryController.getRootCategory);

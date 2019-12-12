@@ -7,7 +7,7 @@ export const useSelectedQuizes = () => {
         return store.quizReducer.selectedQuiz;
     });
     return result;
-}
+};
 
 const initialState = { selectedQuiz: null }
 

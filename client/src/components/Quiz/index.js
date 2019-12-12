@@ -1,15 +1,18 @@
 import React from 'react';
-//--
-import { useLoadQuiz } from './useCases/useLoadQuiz';
+import { useQuiz } from 'src/useCases/useQuiz';
 
-const Quiz = () => {
-	const { quiz, isLoaded } = useLoadQuiz({ quizNumber: 1 });
+const Quiz = (props) => {
 
-	if(!isLoaded){
-		return <p>Loading...</p>
+	const { id: _id } = props;
+	const { quiz, isLoaded } = useQuiz({ _id });
+
+	debugger;
+
+	if (!isLoaded) {
+		return <p>Loading...</p>;
 	}
 
-	return <div>{quiz.text}</div>;
+	return <div>{quiz.title}</div>;
 };
 
 export default Quiz;

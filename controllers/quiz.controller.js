@@ -13,12 +13,27 @@ module.exports = {
 	},
 	async addQiuz(req, res) {
 		try {
-            const quiz = new Quiz(req.body);
+			const quiz = new Quiz(req.body);
 			await quiz.save();
 			res.send('quiz add success');
 		} catch (err) {
 			console.log(err);
 			res.send('error:', err.message);
 		}
-	}
+	},
+	async getQuizById(req, res) {
+		try {
+			let quizId = req.params['id'];
+			const find = await Quiz.findOne({ _id: quizId });
+			res.json(find);
+		} catch (err) {
+			console.log(err);
+			res.send('error:', err.message);
+		}
+	},
+	async getQuizTitles (req, res) {
+        //выбираем тесты согласно списка номеров и берем только номер и имя теста
+		let quizes = await Quiz.find({}, { number: 1, title: 1 });
+        res.json(quizes);
+    },
 };

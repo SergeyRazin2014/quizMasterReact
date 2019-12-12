@@ -4,5 +4,9 @@
 }
 
 .selectQuizTitle {
-    font-weight: bold;
+	font-weight: bold;
+}
+
+.pointer {
+	cursor: pointer;
 }

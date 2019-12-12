@@ -1,7 +1,8 @@
 export class Nod {
-	constructor({ id, name }) {
+	constructor({ id, name, quizIds }) {
 		this.id = id;
 		this.name = name;
+		this.quizIds = quizIds;
 		this.children = [];
 
 		// добавить узел
@@ -10,7 +11,7 @@ export class Nod {
 		};
 
 		// удалить у текущего узла дочерний узел по имени
-		this.removeByName = (name) => {
+		this._removeByNameCurrent = (name) => {
 			this.children = this.children.filter((x) => x.name !== name);
 		};
 
@@ -20,69 +21,56 @@ export class Nod {
 				const node = this.children[i];
 
 				if (node.name === name) {
-					this.removeByName(name);
+					this._removeByNameCurrent(name);
 				} else {
 					node.removeByNameDeep(name);
 				}
 			}
 		};
 
-		// найти узел в текущем узле по имени
-		this.findByName = ({ name }) => {
-			const result = this.children.filter((x) => x.name === name);
-			return result;
-		};
-
-		// найти узлы по имени во всем дереве
-		this.findByNameDeep = ({ name }) => {
-			let result = this.findByName({ name });
-
-			for (let i = 0; i < this.children.length; i++) {
-				const node = this.children[i];
-
-				const finded = node.findByNameDeep({ name });
-
-				if (finded && finded.length) {
-					result = [...result, ...finded];
-				}
-			}
-
-			if (result.length) {
-				return result;
-			}
-
-			return null;
-		};
-
 		// найти узел по id в текущем узле
-		this.findById = ({ id }) => {
-			const result = [];
-			if (this.id == id) {
-				result.push(this);
-			}
-			const findChildren = this.children.filter((x) => x.id == id);
-
-			return [...result, ...findChildren];
-		};
-
-		// найти узел по id во всем дереве
-		this.findByIdDeep = ({ id }) => {
+		this._findByIdCurrent = ({ id }) => {
 
 			if (!id) {
 				return [];
 			}
 
-			// ищем в себе
-			let result = this.findById({ id });
+			const result = [];
+			if (this.id == id) {
+				result.push(this);
+			}
+
+			return result;
+		};
+
+		this.findByIdDeep = ({ id }) => {
+			// найти в себе
+			const findSelf = this._findByIdCurrent({ id });
+
+			// найти в детенышах
+			const findChild = this._findByIdDeepChildren({ id });
+
+			return [...findSelf, ...findChild];
+		};
+
+		// найти узел по id во всем дереве
+		this._findByIdDeepChildren = ({ id }) => {
+
+			if (!id) {
+				return [];
+			}
+
+			let result = [];
 
 			// ищем в каждом дитеныше
 			for (let i = 0; i < this.children.length; i++) {
 				const node = this.children[i];
 
-				const finded = node.findByIdDeep({ id });
+				const findSelf = node._findByIdCurrent({ id });
+				const findChild = node._findByIdDeepChildren({ id });
 
-				if (finded && finded.length) {
-					result = [...result, ...finded];
+				if (findSelf.length || findChild.length) {
+					result = [...findSelf, ...findChild];
 				}
 			}
 
@@ -90,7 +78,32 @@ export class Nod {
 				return result;
 			}
 
-			return null;
+			return [];
 		};
 	}
+}
+
+
+export function buildNode(dataRoot) {
+
+	if (!dataRoot) {
+		return null;
+	}
+
+	// создал нод для корневого датаНода
+	const rootNode = new Nod({ id: dataRoot.id, name: dataRoot.name, quizIds: dataRoot.quizIds });
+
+	// создал ноды для дочерних датаНодов и добавил их корневому дата ноду
+	for (let i = 0; i < dataRoot.children.length; i++) {
+		const dataNod = dataRoot.children[i];
+		const nod = new Nod({ id: dataNod.id, name: dataNod.name, quizIds: dataNod.quizIds });
+		rootNode.children.push(nod);
+
+		for (let j = 0; j < dataNod.children.length; j++) {
+			const childDataNod = dataNod.children[j];
+			nod.children.push(buildNode(childDataNod));
+		}
+	}
+
+	return rootNode;
 }

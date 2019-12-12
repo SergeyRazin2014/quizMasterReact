@@ -3,6 +3,7 @@ import { useRoutes } from 'hookrouter';
 import { Provider } from 'react-redux';
 import router from '../../router';
 import Navbar from '../Navbar';
+import NoPageFound from 'src/components/NoPageFound';
 
 import store from '../../redux/store';
 
@@ -13,7 +14,7 @@ const App = () => {
 		<Provider store={store}>
 			<div>
 				<Navbar />
-				{routeResult}
+				{routeResult || <NoPageFound/>}
 			</div>
 		</Provider>
 	);

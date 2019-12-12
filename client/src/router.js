@@ -7,7 +7,7 @@ import SelectQuiz from './components/SelectQuiz.js';
 
 const Router = {
 	'/': () => <Home />,
-	'/quiz': () => <Quiz />,
+	'/quiz/:id': ({ id }) => <Quiz id={id} />,
 	'/categories': () => <Categories />,
 	'/selectQuiz': () => <SelectQuiz />
 };

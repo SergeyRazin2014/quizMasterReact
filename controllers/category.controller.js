@@ -6,7 +6,7 @@ module.exports = {
             "name": "root",
             "children": [
                 {
-                    "id": 3,
+                    "id": 2,
                     "name": "Ребенок",
                     "children": [
                         {
@@ -27,32 +27,31 @@ module.exports = {
                     ]
                 },
                 {
-                    "id": 2,
+                    "id": 6,
                     "name": "Взрослый",
                     "children": [
                         {
-                            "id": 6,
+                            "id": 7,
                             "name": "Мужчина",
                             "children": [
                                 {
-                                    "id": 7,
+                                    "id": 8,
                                     "name": "Проблемы общего характера",
                                     "children": [],
                                     "quizIds": [
-                                        1,
-                                        2,
-                                        3
+                                        '5dac97174a99190be07e3837',
+                                        '5deba3af0e2f882cd8a8fba0'
                                     ]
                                 },
                                 {
-                                    "id": 8,
+                                    "id": 9,
                                     "name": "Проблемы секса",
                                     "children": []
                                 }
                             ]
                         },
                         {
-                            "id": 9,
+                            "id": 10,
                             "name": "Женщина",
                             "children": []
                         }

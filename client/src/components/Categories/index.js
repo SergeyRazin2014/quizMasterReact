@@ -1,64 +1,29 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Nod } from 'src/components/Categories/common/Nod';
 import { Tree } from 'antd';
 import { useRootCategory } from 'src/useCases/useRootCategory';
-
-// C:\AAA\MyProjects\quizMasterReact\client\src\useCases\useRootCategory.js
 
 import 'antd/dist/antd.css';
 import './category.css';
 import { types } from 'src/redux/reducers/types';
+import { useQuizTitles } from 'src/useCases/useQuizTitles';
 
 const { TreeNode } = Tree;
 
-const quizTest = [{ id: 1, name: 'Понос' }, { id: 2, name: 'Запор' }, { id: 3, name: 'Хроническая усталость' }];
-
-const createTestCategoryes = () => {
-	const root = new Nod({ id: 1, name: 'root' });
-	const adult = new Nod({ id: 2, name: 'Взрослый' });
-
-	const baby = new Nod({ id: 3, name: 'Ребенок' });
-	const babyBeforYear = new Nod({ id: 3, name: 'Младенец до года' });
-	const babyAfterYear = new Nod({ id: 4, name: 'Дети старше года' });
-	const teenagers = new Nod({ id: 5, name: 'Подросток' });
-
-	const man = new Nod({ id: 6, name: 'Мужчина' });
-	const commonProblems = new Nod({ id: 7, name: 'Проблемы общего характера' });
-	commonProblems.quizIds = [1, 2, 3];
-	const sexProblem = new Nod({ id: 8, name: 'Проблемы секса' });
-
-	const woman = new Nod({ id: 9, name: 'Женщина' });
-
-	root.add(baby);
-
-	// ребенок
-	baby.add(babyBeforYear);
-	baby.add(babyAfterYear);
-	baby.add(teenagers);
-
-	// взрослый
-	root.add(adult);
-
-	// мужчина
-	adult.add(man);
-	man.add(commonProblems);
-	man.add(sexProblem);
-
-	// женщина
-	adult.add(woman);
-
-	return root;
-};
+// ☻ todo: загрузить с сервера эти тесты
+// const quizTest = [{ id: 1, name: 'Понос' }, { id: 2, name: 'Запор' }, { id: 3, name: 'Хроническая усталость' }];
 
 
 const Categories = () => {
 
 	const dispatch = useDispatch();
-	const { rootCategory, isLoaded } = useRootCategory();
+	const { rootCategory, isLoaded: categoryLoaded } = useRootCategory();
+	const { quizTitles, isLoaded: quizTitlesLoaded } = useQuizTitles();
+
+	const isLoaded = categoryLoaded && quizTitlesLoaded;
 
 	if (!isLoaded) {
-		return 'LOADING...';
+		return <p>LOADING...</p>;
 	}
 
 
@@ -72,7 +37,6 @@ const Categories = () => {
 
 	const categoriesElements = renderCategories(rootCategory);
 
-	
 
 	return (
 
@@ -87,7 +51,7 @@ const Categories = () => {
 				const category = rootCategory.findByIdDeep({ id: categoryId })[0];
 				dispatch({ type: types.SELECT_CATEGORY, payload: category });
 
-				const quizes = quizTest.filter(x => category.quizIds && category.quizIds.some(y => y == x.id));
+				const quizes = quizTitles.filter(x => category.quizIds && category.quizIds.some(y => y == x._id));
 				dispatch({ type: types.SELECT_QUIZ, payload: quizes });
 			}}
 
