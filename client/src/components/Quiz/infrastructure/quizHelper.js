@@ -25,7 +25,7 @@ const isAnswersEquals = ({ answ1, answ2 }) => {
     return true;
 };
 
-export const findDiagnos = ({ quiz, answers }) => {
+export const findDiagnoz = ({ quiz, answers }) => {
 
     for (let i = 0; i < quiz.diagnozes.length; i++) {
         const diagnoz = quiz.diagnozes[i];

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
-	text: {
+	title: {
 		type: String,
 		required: true
 	},
@@ -28,12 +28,12 @@ const UserSchema = new mongoose.Schema({
 				required: true
 			},
 
-			key: [{
-				queryNumber:{
-					type: Number,
+			answers: [{
+				questionId:{
+					type: String,
 					required: true
 				},
-				answer:{
+				status:{
 					type: Boolean,
 					required: true
 				}
