@@ -7,7 +7,6 @@ export const QuizLinkItem = (item) => {
 
     const handleClick = () => {
         // переход на страницу с тестом
-        debugger;
         navigate(`/quiz/${item._id}`);
     };
 
