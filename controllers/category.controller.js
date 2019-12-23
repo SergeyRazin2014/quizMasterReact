@@ -3,7 +3,7 @@ module.exports = {
 
         const rootCategory = {
             "id": 1,
-            "name": "root",
+            "name": "Выберите категорию",
             "children": [
                 {
                     "id": 2,
