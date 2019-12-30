@@ -1,43 +1,13 @@
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
-// import './index.css';
 import { Table, Input, Button, Icon } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { useQuizTitles } from 'src/useCases/useQuizTitles';
-
-
-const data = [
-    {
-        key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-    },
-    {
-        key: '2',
-        name: 'Joe Black',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-    },
-    {
-        key: '3',
-        name: 'Jim Green',
-        age: 32,
-        address: 'Sidney No. 1 Lake Park',
-    },
-    {
-        key: '4',
-        name: 'Jim Red',
-        age: 32,
-        address: 'London No. 2 Lake Park',
-    },
-];
-
+import { A } from 'hookrouter';
 
 export const QuizesAdm = () => {
 
     const { isLoaded, quizTitles } = useQuizTitles();
-
     const [searchInfo, setSearchInfo] = useState({});
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -55,7 +25,6 @@ export const QuizesAdm = () => {
 
     let searchInput = null;
 
-    //------------------------------
     const getColumnSearchProps = dataIndex => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
             <div style={{ padding: 8 }}>
@@ -87,55 +56,75 @@ export const QuizesAdm = () => {
             <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
         ),
         onFilter: (value, record) => record[dataIndex]
-                .toString()
-                .toLowerCase()
-                .includes(value.toLowerCase()),
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase()),
         onFilterDropdownVisibleChange: visible => {
             if (visible) {
                 setTimeout(() => searchInput.select());
             }
         },
 
+        // @ts-ignore
         render: text => (searchInfo.searchedColumn === dataIndex ? (
-                <Highlighter
-                    highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-                    searchWords={[searchInfo.searchText]}
-                    autoEscape
-                    textToHighlight={text.toString()}
-                />
-            ) : (
-                    text
-                )),
+            <Highlighter
+                highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+                // @ts-ignore
+                searchWords={[searchInfo.searchText]}
+                autoEscape
+                textToHighlight={text.toString()}
+            />
+        ) : (
+                text
+            )),
     });
-    //------------------------------
-
 
     if (!isLoaded) {
         return <div>Loading...</div>;
     }
 
+    quizTitles.forEach(x => {
+        x.key = x._id;
+        x.isCorrectStr = x.isCorrect ? 'Да' : 'Нет';
+    });
+
     const columns = [
+
         {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
+            title: '№',
+            dataIndex: 'number',
+            key: 'number',
+            width: '5%',
+            ...getColumnSearchProps('number'),
+        },
+        {
+            title: 'Тест',
+            dataIndex: 'title',
+            key: 'title',
             width: '30%',
-            ...getColumnSearchProps('name'),
-            render: text => <a>{text}</a>
+            ...getColumnSearchProps('title'),
+            render: (text, record) => <A href={`/admin/quiz/${record._id}`}>{text}</A>
+        },
+
+        {
+            title: 'Корректен',
+            dataIndex: 'isCorrectStr',
+            key: 'isCorrectStr',
+            ...getColumnSearchProps('isCorrectStr'),
+        },
+
+        {
+            title: 'id',
+            dataIndex: '_id',
+            key: '_id',
+            ...getColumnSearchProps('_id'),
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
-            width: '20%',
-            ...getColumnSearchProps('age'),
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
-            ...getColumnSearchProps('address'),
+            title: '',
+            dataIndex: 'delete',
+            key: 'delete',
+            render: (text, record) => <a onClick={() => { alert(`тест [${record.title}] удален`) }} href="#">Удалить</a>
         },
     ];
-    return <Table columns={columns} dataSource={data} />;
+    return <Table bordered size="small" columns={columns} dataSource={quizTitles} pagination={false} />;
 };

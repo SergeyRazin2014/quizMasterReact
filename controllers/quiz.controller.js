@@ -18,7 +18,32 @@ module.exports = {
 			res.send('quiz add success');
 		} catch (err) {
 			console.log(err);
-			res.send('error:', err.message);
+			res.send('error: ', err.message);
+		}
+	},
+	async updateQuiz(req, res) {
+		try {
+
+			let newQuiz = req.body;
+
+			let modelForValid = new Quiz(newQuiz);
+			let err = modelForValid.validateSync();
+			if (err) {
+				console.log(err);
+			}
+
+			let result = await Quiz.findOneAndUpdate({ _id: newQuiz._id }, newQuiz);
+
+			if(result){
+				res.json(result);
+			}else{
+				res.sendStatus(500).send(err);
+			}
+
+
+		} catch (err) {
+			console.log(err);
+			res.send('error: ', err.message);
 		}
 	},
 	async getQuizById(req, res) {
@@ -31,9 +56,9 @@ module.exports = {
 			res.send('error:', err.message);
 		}
 	},
-	async getQuizTitles (req, res) {
-        //выбираем тесты согласно списка номеров и берем только номер и имя теста
-		let quizes = await Quiz.find({}, { number: 1, title: 1 });
-        res.json(quizes);
-    },
+	async getQuizTitles(req, res) {
+		//выбираем тесты согласно списка номеров и берем только номер и имя теста
+		let quizes = await Quiz.find({}, { number: 1, title: 1, isCorrect: 1 });
+		res.json(quizes);
+	},
 };

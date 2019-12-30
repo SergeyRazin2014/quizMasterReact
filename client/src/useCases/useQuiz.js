@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import { api } from 'src/api';
 
 export const useQuiz = ({ _id }) => {
-
-
     const [quiz, setQuiz] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
 

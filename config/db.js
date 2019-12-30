@@ -8,6 +8,7 @@ const connectDB = async () => {
         console.log('MongoDB connected...');
     } catch (err) {
         console.error(err.message);
+        // eslint-disable-next-line no-undef
         process.exit(1); //Exit process with failure
     }
 }
