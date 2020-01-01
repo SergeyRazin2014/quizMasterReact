@@ -1,11 +1,12 @@
-import React from 'react';
-import QuizUpdateForm from 'src/components/Admin/QuizAdm/forms/QuizUpdateForm';
+// import React from 'react';
+// import QuizUpdateForm from 'src/components/Admin/QuizAdm/forms/QuizUpdateForm';
 
-export const QuizAdm = (props) => {
+// export const QuizAdm = (props) => {
 
-    const handleSubmit = (values) => {
-        alert(JSON.stringify(values));
-    }
+//     const handleSubmit = (values) => {
+//         alert(JSON.stringify(values));
+//     }
 
-    return <QuizUpdateForm quizId={props.quizId} onSubmit={handleSubmit} />;
-}
+//     // @ts-ignore
+//     return <QuizUpdateForm quizId={props.quizId} onSubmit={handleSubmit} />;
+// }

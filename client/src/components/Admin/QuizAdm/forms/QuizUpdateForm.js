@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useQuiz } from 'src/useCases/useQuiz';
 import { Box } from 'src/components/ui-kit/Box';
 import { Input, Table, Button } from 'antd';
 import { DeleteQuestion } from 'src/components/Admin/QuizAdm/Actions/DeleteQuestion';
 import { AddQuestion } from 'src/components/Admin/QuizAdm/Actions/AddQuestion';
-import { Field, reduxForm } from 'redux-form';
+import { useFormValidation } from 'src/useCases/useFromValidation';
 
 // столбцы вопросов
 const columnsQuestions = [
@@ -19,6 +19,7 @@ const columnsQuestions = [
         dataIndex: 'text',
         key: 'text',
         render: (text, record) => <Input value={text} />
+        // render: (text, record) => <TextValid myVal={text} myComponent={Input} name={`questionTitle_${record.number}`} />
     },
     {
         title: 'Id',
@@ -30,7 +31,6 @@ const columnsQuestions = [
         title: '',
         key: 'delete',
         width: '3%',
-        // render: (text, record) => <Button icon="delete" shape="circle" type="danger" />
         render: (text, record) => <DeleteQuestion question={record} />
     }
 ];
@@ -64,17 +64,33 @@ const columnsDiagnozes = [
     }
 ];
 
-const QuizUpdateForm = (props) => {
+export const QuizUpdateForm = (props) => {
 
-    const { handleSubmit, pristine, reset, submitting, quizId: _id } = props;
+    const { quizId: _id } = props;
     const { quiz, isLoaded } = useQuiz({ _id });
-    const [quizTitle, setQuizTitle] = useState(null);
 
-    useEffect(() => {
-        if (quiz) {
-            setQuizTitle(quiz.title);
+    const INITIAL_STATE = {
+        quizTitle: isLoaded ? quiz.title : ""
+    };
+
+    const validate = (values) => {
+
+        const errors = {};
+
+        if (!values.quizTitle) {
+            errors.quizTitle = "Required title";
         }
-    }, [isLoaded]);
+
+        return errors;
+    };
+
+    const { handleSubmit,
+        handleChange,
+        handleBlur,
+        values,
+        errors,
+        isSubmitting } = useFormValidation(INITIAL_STATE, validate, isLoaded);
+
 
     if (!isLoaded) {
         return <p>Loading...</p>;
@@ -106,15 +122,15 @@ const QuizUpdateForm = (props) => {
                 <p>
                     <strong>Номер:</strong> {quiz.number}
                 </p>
-                <Field
-                    name="lastName"
-                    component="input"
-                    type="text"
-                    placeholder="last name"
-                />
+
                 <Box>
                     <strong>Заголовок:</strong>
-                    <Input value={quizTitle} onChange={(e) => { setQuizTitle(e.target.value); }} />
+                    <Input name="quizTitle"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        defaultValue={quiz.title}
+                    />
+                    {errors.quizTitle && <p style={{ color: 'red' }} >{errors.quizTitle}</p>}
                 </Box>
                 <Box mt={20}>
                     <strong>Вопросы:</strong>
@@ -132,12 +148,9 @@ const QuizUpdateForm = (props) => {
                 </Box>
 
                 <Box mt={20}>
-                    <Button htmlType="submit" type="primary" onClick={handleSubmit} >Сохранить</Button>
+                    <Button htmlType="submit" type="primary" >Сохранить</Button>
                 </Box>
             </form>
         </Box>
     );
 };
-
-
-export default reduxForm({ form: 'updateQuiz' })(QuizUpdateForm);
