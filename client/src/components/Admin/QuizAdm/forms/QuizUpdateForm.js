@@ -110,10 +110,9 @@ export const QuizUpdateForm = (props) => {
         }
     };
 
-    const onChangeQuizTitle = (e) => {
-        const { value } = e.target;
-        setQuiz({ ...quiz, title: value });
-        validateTitle(value, e.target.name);
+    const onChangeQuiz = (e) => {
+        setQuiz({ ...quiz, [e.target.name]: e.target.value });
+        validateTitle(e.target.value, e.target.name);
     };
 
     return (
@@ -128,8 +127,8 @@ export const QuizUpdateForm = (props) => {
 
                 <Box>
                     <strong>Заголовок:</strong>
-                    <Input value={quiz.title} name='title' onChange={onChangeQuizTitle} />
-                    {errors.title && <p>Required</p>}
+                    <Input value={quiz.title} name='title' onChange={onChangeQuiz} />
+                    {errors.title && <p style={{ color: 'red' }} >Required</p>}
 
                 </Box>
                 <Box mt={20}>
