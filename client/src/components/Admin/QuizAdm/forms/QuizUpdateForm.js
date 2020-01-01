@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { useQuiz } from 'src/useCases/useQuiz';
 import { Box } from 'src/components/ui-kit/Box';
 import { Input, Table, Button } from 'antd';
 import { DeleteQuestion } from 'src/components/Admin/QuizAdm/Actions/DeleteQuestion';
 import { AddQuestion } from 'src/components/Admin/QuizAdm/Actions/AddQuestion';
-import { useFormValidation } from 'src/useCases/useFromValidation';
+import { NotEmptyInput } from 'src/components/Admin/QuizAdm/forms/fields/NotEmptyInput';
 
 // столбцы вопросов
 const columnsQuestions = [
@@ -18,8 +18,14 @@ const columnsQuestions = [
         title: 'Текст',
         dataIndex: 'text',
         key: 'text',
-        render: (text, record) => <Input value={text} />
-        // render: (text, record) => <TextValid myVal={text} myComponent={Input} name={`questionTitle_${record.number}`} />
+
+        // render: (text, record) => <Input value={text} />
+        render: (text, record) => {
+            const currentName = `question_${record._id}`;
+            return (
+                <NotEmptyInput text={text} record={record} name={currentName} />
+            );
+        }
     },
     {
         title: 'Id',
@@ -67,30 +73,8 @@ const columnsDiagnozes = [
 export const QuizUpdateForm = (props) => {
 
     const { quizId: _id } = props;
-    const { quiz, isLoaded } = useQuiz({ _id });
-
-    const INITIAL_STATE = {
-        quizTitle: isLoaded ? quiz.title : ""
-    };
-
-    const validate = (values) => {
-
-        const errors = {};
-
-        if (!values.quizTitle) {
-            errors.quizTitle = "Required title";
-        }
-
-        return errors;
-    };
-
-    const { handleSubmit,
-        handleChange,
-        handleBlur,
-        values,
-        errors,
-        isSubmitting } = useFormValidation(INITIAL_STATE, validate, isLoaded);
-
+    const { quiz, setQuiz, isLoaded } = useQuiz({ _id });
+    const [errors, setErrors] = useState({});
 
     if (!isLoaded) {
         return <p>Loading...</p>;
@@ -113,6 +97,25 @@ export const QuizUpdateForm = (props) => {
         });
     });
 
+    // отправка формы
+    const handleSubmit = (e) => {
+        e.preventDefault();
+    };
+
+    const validateTitle = (value, name) => {
+        if (!value) {
+            errors[name] = 'Required';
+        } else {
+            errors[name] = null;
+        }
+    };
+
+    const onChangeQuizTitle = (e) => {
+        const { value } = e.target;
+        setQuiz({ ...quiz, title: value });
+        validateTitle(value, e.target.name);
+    };
+
     return (
         <Box p={'20px'} color='black' >
             <form onSubmit={handleSubmit}>
@@ -125,12 +128,9 @@ export const QuizUpdateForm = (props) => {
 
                 <Box>
                     <strong>Заголовок:</strong>
-                    <Input name="quizTitle"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        defaultValue={quiz.title}
-                    />
-                    {errors.quizTitle && <p style={{ color: 'red' }} >{errors.quizTitle}</p>}
+                    <Input value={quiz.title} name='title' onChange={onChangeQuizTitle} />
+                    {errors.title && <p>Required</p>}
+
                 </Box>
                 <Box mt={20}>
                     <strong>Вопросы:</strong>

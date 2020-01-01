@@ -14,5 +14,5 @@ export const useQuiz = ({ _id }) => {
         })
     }, []);
 
-    return { quiz, isLoaded };
+    return { quiz, setQuiz, isLoaded };
 }
