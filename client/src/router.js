@@ -15,6 +15,7 @@ const Router = {
 	'/admin': () => <Dashboard />,
 	'/admin/quzes': () => <QuizesAdm />,
 	'/admin/quiz/:quizId': ({ quizId }) => <QuizUpdateForm quizId={quizId} />,
+	'/admin/addQuiz': () => <QuizUpdateForm quizId={null} />
 };
 
 export default Router;

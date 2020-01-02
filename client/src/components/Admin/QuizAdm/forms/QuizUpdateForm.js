@@ -8,7 +8,7 @@ import objectid from 'objectid';
 
 export const QuizUpdateForm = (props) => {
 
-    const { quizId: _id } = props;
+    const _id = props.quizId;
     const { quiz, setQuiz, isLoaded } = useQuiz({ _id });
     const [selectedDiagnoz, setSelectedDiagnoz] = useState(null);
 
@@ -41,8 +41,13 @@ export const QuizUpdateForm = (props) => {
     // отправка формы
     const handleSubmit = (e) => {
         e.preventDefault();
-        debugger;
-        api.post('/updateQuiz', quiz);
+        if (quiz._id) {
+            // обновить тест
+            api.post('/updateQuiz', quiz);
+        } else {
+            // создать новый тест
+            api.post('/addQuiz', quiz);
+        }
     };
 
     // изменить заголовок теста

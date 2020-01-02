@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
-import { Table, Input, Button, Icon } from 'antd';
+import { Table, Input, Button, Icon, Popover } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { useQuizTitles } from 'src/useCases/useQuizTitles';
-import { A } from 'hookrouter';
+import { A, navigate } from 'hookrouter';
 import { api } from 'src/api';
+import { Box } from 'src/components/ui-kit/Box';
 
 export const QuizesAdm = () => {
 
@@ -84,9 +85,10 @@ export const QuizesAdm = () => {
         return <div>Loading...</div>;
     }
 
-    quizTitles.forEach(x => {
+    quizTitles.forEach((x, index) => {
         x.key = x._id;
         x.isCorrectStr = x.isCorrect ? 'Да' : 'Нет';
+        x.number = index + 1;
     });
 
     const columns = [
@@ -124,8 +126,32 @@ export const QuizesAdm = () => {
             title: '',
             dataIndex: 'delete',
             key: 'delete',
-            render: (text, record) => <a onClick={() => { api.delete(`/deleteQuiz/${record._id}`); }} href="#">Удалить</a>
+            width: `5%`,
+            render: (text, record) => (
+                <Button icon="delete" shape="circle" type="danger" onClick={() => {
+                    api.delete(`/deleteQuiz/${record._id}`).then((respons) => {
+                        if (respons.status === 200) {
+                            alert('Тест успешно удален');
+                            // eslint-disable-next-line no-restricted-globals
+                            location.reload();
+                        } else {
+                            alert('Ошибка удаления теста: ' + respons.data);
+                        }
+                    });
+                }} />
+            )
         },
     ];
-    return <Table bordered size="small" columns={columns} dataSource={quizTitles} pagination={false} />;
+    return (
+        <>
+            <Box mt={10} ml={20} mr={20}>
+                <Popover placement="topLeft" content="Создать новый тест">
+                    <Button type="primary" shape="circle-outline" icon="plus" onClick={() => navigate('/admin/addQuiz')} />
+                </Popover>
+                <Box mt={10} >
+                    <Table bordered size="small" columns={columns} dataSource={quizTitles} pagination={false} />
+                </Box>
+            </Box>
+        </>
+    );
 };
