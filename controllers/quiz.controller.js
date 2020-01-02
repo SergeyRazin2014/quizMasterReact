@@ -56,6 +56,16 @@ module.exports = {
 			res.send('error:', err.message);
 		}
 	},
+	async deleteQuizById(req, res) {
+		try {
+			let quizId = req.params['id'];
+			const find = await Quiz.findOneAndDelete({ _id: quizId });
+			res.json(find);
+		} catch (err) {
+			console.log(err);
+			res.send('error:', err.message);
+		}
+	},
 	async getQuizTitles(req, res) {
 		//выбираем тесты согласно списка номеров и берем только номер и имя теста
 		let quizes = await Quiz.find({}, { number: 1, title: 1, isCorrect: 1 });

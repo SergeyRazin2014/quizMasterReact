@@ -4,6 +4,7 @@ import { Table, Input, Button, Icon } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { useQuizTitles } from 'src/useCases/useQuizTitles';
 import { A } from 'hookrouter';
+import { api } from 'src/api';
 
 export const QuizesAdm = () => {
 
@@ -123,7 +124,7 @@ export const QuizesAdm = () => {
             title: '',
             dataIndex: 'delete',
             key: 'delete',
-            render: (text, record) => <a onClick={() => { alert(`тест [${record.title}] удален`) }} href="#">Удалить</a>
+            render: (text, record) => <a onClick={() => { api.delete(`/deleteQuiz/${record._id}`); }} href="#">Удалить</a>
         },
     ];
     return <Table bordered size="small" columns={columns} dataSource={quizTitles} pagination={false} />;

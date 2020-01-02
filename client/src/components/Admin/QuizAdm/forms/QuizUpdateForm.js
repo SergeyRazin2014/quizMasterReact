@@ -4,7 +4,6 @@ import { Box } from 'src/components/ui-kit/Box';
 import { Input, Table, Button } from 'antd';
 import { DiagnozForm } from './DiagnozForm';
 import { api } from 'src/api/index';
-import uuid from 'uuid';
 import objectid from 'objectid';
 
 export const QuizUpdateForm = (props) => {
@@ -42,6 +41,7 @@ export const QuizUpdateForm = (props) => {
     // отправка формы
     const handleSubmit = (e) => {
         e.preventDefault();
+        debugger;
         api.post('/updateQuiz', quiz);
     };
 

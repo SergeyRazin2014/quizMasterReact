@@ -13,5 +13,6 @@ router.post('/addQuiz', quizController.addQiuz);
 router.post('/updateQuiz', quizController.updateQuiz);
 router.get('/getQuizById/:id', quizController.getQuizById);
 router.get('/getQuizTitles', quizController.getQuizTitles);
+router.delete('/deleteQuiz/:id', quizController.deleteQuizById)
 
 router.get('/categories', categoryController.getRootCategory);

@@ -3,9 +3,6 @@ import { Modal, Input, Table, Button } from 'antd';
 import { Box } from 'src/components/ui-kit/Box';
 
 export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
-
-    debugger;
-
     const [diagClone, setDiagClone] = useState(null);
 
     useEffect(() => {
