@@ -3,6 +3,9 @@ import { useQuiz } from 'src/useCases/useQuiz';
 import { Box } from 'src/components/ui-kit/Box';
 import { Input, Table, Button } from 'antd';
 import { DiagnozForm } from './DiagnozForm';
+import { api } from 'src/api/index';
+import uuid from 'uuid';
+import objectid from 'objectid';
 
 export const QuizUpdateForm = (props) => {
 
@@ -15,8 +18,9 @@ export const QuizUpdateForm = (props) => {
     }
 
     // ключи для вопросов
-    quiz.questions.forEach(x => {
-        x.key = x._id;
+    quiz.questions.forEach((q, index) => {
+        q.key = q._id;
+        q.number = index + 1;
     });
 
     // ключи для диагнозов
@@ -27,6 +31,9 @@ export const QuizUpdateForm = (props) => {
         diag.answerKey = '';
         diag.answers.forEach(a => {
             const findedQuestion = quiz.questions.find(question => question._id === a.questionId);
+            if (!findedQuestion) {
+                return;
+            }
             const resultStr = `${findedQuestion.number}: ${a.status ? 'Да' : 'Нет'}`;
             diag.answerKey += ' ' + resultStr;
         });
@@ -35,6 +42,7 @@ export const QuizUpdateForm = (props) => {
     // отправка формы
     const handleSubmit = (e) => {
         e.preventDefault();
+        api.post('/updateQuiz', quiz);
     };
 
     // изменить заголовок теста
@@ -44,7 +52,7 @@ export const QuizUpdateForm = (props) => {
 
     // добавить вопрос
     const addQuestion = () => {
-        const newQuestion = { _id: null, number: quiz.questions.length + 1, text: "" };
+        const newQuestion = { _id: objectid(), number: quiz.questions.length + 1, text: "" };
         setQuiz({ ...quiz, questions: [...quiz.questions, newQuestion] });
     };
 
@@ -72,7 +80,7 @@ export const QuizUpdateForm = (props) => {
 
     // добавить диагноз
     const addDiagnoz = () => {
-        const newDiagnoz = { _id: null, text: 'Новый диагноз', answers: [] };
+        const newDiagnoz = { text: 'Новый диагноз', answers: [] };
         setQuiz({ ...quiz, diagnozes: [...quiz.diagnozes, newDiagnoz] });
     };
 

@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Input, Table, Button } from 'antd';
 import { Box } from 'src/components/ui-kit/Box';
 
-
 export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
 
+    debugger;
+
     const [diagClone, setDiagClone] = useState(null);
-
-
 
     useEffect(() => {
         if (!diagnoz) {
@@ -40,6 +39,11 @@ export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
         setSelectedDiagnoz(null);
     };
 
+    const deleteQuestionFromDiag = (question) => {
+        const newAnswers = diagClone.answers.filter(a => a.questionId !== question._id);
+        setDiagClone({ ...diagClone, answers: newAnswers });
+    }
+
     const setQuestionStatus = (question, status) => {
 
         const findQuestionIndex = diagClone.answers.findIndex(x => x.questionId === question._id);
@@ -50,7 +54,7 @@ export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
             setDiagClone({ ...diagClone, answers: [...before, newAnswer, ...after] });
         } else {
             const newAnswer = { questionId: question._id, status };
-            diagClone.answers.push(newAnswer);
+            setDiagClone({ ...diagClone, answers: [...diagClone.answers, newAnswer] });
         }
     };
 
@@ -67,7 +71,7 @@ export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
             dataIndex: 'text',
             key: 'text',
 
-            render: (text, record) => {
+            render: (text) => {
                 return (<p>{text}</p>);
             }
         },
@@ -80,20 +84,14 @@ export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
         {
             title: '',
             key: 'answer',
-            width: '15%',
+            width: '20%',
 
             render: (text, record) => {
-                // это вопрос
-                // найти в ответах этого диагноза этот вопрос
-                // если  у найденного ответа статус - true - тогда да - зеленый цвет
-                // если у найденного ответа статус - false - тогда да - черный цвет
-                // если не найден ответ с таким статусо - тогда оставляем как есть
-
                 const answer = diagClone.answers.find(a => a.questionId === record._id);
 
                 const styleYesBtnChecked = { background: 'green' };
                 const styleYesBtnNotChecked = { background: 'white' };
-                const styleYesBtnEmpty = { background: 'gray' };
+                const styleYesBtnEmpty = { background: 'lightgray' };
 
                 let currentYesBtn = null;
                 let currentNoBtn = null;
@@ -117,6 +115,7 @@ export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
                     <Button.Group>
                         <Button type="dashed" icon="check-circle" onClick={() => setQuestionStatus(record, true)} style={currentYesBtn} >Да</Button>
                         <Button type="dashed" icon="close-circle" onClick={() => setQuestionStatus(record, false)} style={currentNoBtn} >Нет</Button>
+                        <Button type="dashed" icon="delete" onClick={() => deleteQuestionFromDiag(record)} />
                     </Button.Group>
                 );
             }
@@ -124,6 +123,10 @@ export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
 
 
     ];
+
+    const diagTextChange = (e) => {
+        setDiagClone({ ...diagClone, text: e.target.value });
+    };
 
     return (
         diagnoz && <Modal
@@ -142,7 +145,7 @@ export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
             <hr />
             <Box mt={10}>
                 <p style={{ color: 'black' }} ><strong>Текст диагноза:</strong></p>
-                <Input.TextArea value={diagnoz.text} rows={6} />
+                <Input.TextArea value={diagClone && diagClone.text} rows={6} onChange={diagTextChange} />
             </Box>
 
         </Modal>);
