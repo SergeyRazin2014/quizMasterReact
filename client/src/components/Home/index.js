@@ -10,7 +10,7 @@ const index = () => {
 
 	const handleClick = () => {
 		navigate('/selectQuiz');
-	}
+	};
 
 	return (
 		<div className="home-block-wrapper">
@@ -25,7 +25,6 @@ const index = () => {
 				<p> Ваш вопрос уточняется, и вы получаете ответ.</p>
 				<br />
 				<Button type="primary" onClick={handleClick} >НАЧАТЬ ТЕСТИРОВАНИЕ</Button>
-				<A href="/quiz"> ОТКРЫТЬ ПЕРВЫЙ ТЕСТ </A>
 			</div>
 			<div className="home-img-wrapper">
 				<img src={homeImg} alt="doctor" />

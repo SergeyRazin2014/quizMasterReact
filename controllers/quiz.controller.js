@@ -1,4 +1,5 @@
 const Quiz = require('../models/quiz');
+const CategoryModel = require('../models/category');
 
 module.exports = {
 	async getQuizByNumber(req, res) {
@@ -23,8 +24,16 @@ module.exports = {
 	},
 	async updateQuiz(req, res) {
 		try {
-
 			let newQuiz = req.body;
+
+			// если есть категория в тесте, то обновить и категорию (добавить в этой категории тест)
+			if (newQuiz.categoryId) {
+				let findCategory = await CategoryModel.findById(newQuiz.categoryId);
+				if (findCategory) {
+					findCategory.quizIds.push(req.body._id);
+					await findCategory.save();
+				}
+			}
 
 			let modelForValid = new Quiz(newQuiz);
 			let err = modelForValid.validateSync();
@@ -34,9 +43,9 @@ module.exports = {
 
 			let result = await Quiz.findOneAndUpdate({ _id: newQuiz._id }, newQuiz);
 
-			if(result){
+			if (result) {
 				res.json(result);
-			}else{
+			} else {
 				res.sendStatus(500).send(err);
 			}
 

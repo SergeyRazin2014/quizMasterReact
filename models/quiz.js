@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 
-const UserSchema = new mongoose.Schema({
+const QuizSchema = new mongoose.Schema({
 	title: {
 		type: String,
 		required: true
 	},
+	categoryId: { type: String },
 	questions: [
 		{
 			text: {
@@ -25,21 +26,21 @@ const UserSchema = new mongoose.Schema({
 			},
 
 			answers: [{
-				questionId:{
+				questionId: {
 					type: String,
 					required: true
 				},
-				status:{
+				status: {
 					type: Boolean,
 					required: true
 				}
-				
+
 			}]
-			
+
 		}
 	]
 });
 
-const eventModel = mongoose.model('Quiz', UserSchema);
+const eventModel = mongoose.model('Quiz', QuizSchema);
 
 module.exports = eventModel;

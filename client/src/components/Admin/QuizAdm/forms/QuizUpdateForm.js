@@ -5,12 +5,17 @@ import { Input, Table, Button } from 'antd';
 import { DiagnozForm } from './DiagnozForm';
 import { api } from 'src/api/index';
 import objectid from 'objectid';
+import { SelectCategory } from 'src/components/Admin/QuizAdm/forms/actions/SelectCategory';
+import { useCategories } from 'src/useCases/useCategories';
 
 export const QuizUpdateForm = (props) => {
 
     const _id = props.quizId;
-    const { quiz, setQuiz, isLoaded } = useQuiz({ _id });
+    const { quiz, setQuiz, isLoaded: isQuizLoaded } = useQuiz({ _id });
+    const { allCategories, isLoaded: isCategoryLoaded } = useCategories();
     const [selectedDiagnoz, setSelectedDiagnoz] = useState(null);
+
+    const isLoaded = isQuizLoaded && isCategoryLoaded;
 
     if (!isLoaded) {
         return <p>Loading...</p>;
@@ -164,7 +169,6 @@ export const QuizUpdateForm = (props) => {
         }
     ];
 
-
     return (
         <Box p={'20px'} color='black' >
             <form onSubmit={handleSubmit}>
@@ -192,6 +196,10 @@ export const QuizUpdateForm = (props) => {
                     <Box mt={10}>
                         <Button type="primary" shape="circle-outline" icon="plus" onClick={addDiagnoz} />
                     </Box>
+                </Box>
+
+                <Box mt={20} mb={20}>
+                    <SelectCategory quiz={quiz} allCategories={allCategories} setQuiz={setQuiz} />
                 </Box>
 
                 <Box mt={20}>

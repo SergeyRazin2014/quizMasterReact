@@ -15,4 +15,5 @@ router.get('/getQuizById/:id', quizController.getQuizById);
 router.get('/getQuizTitles', quizController.getQuizTitles);
 router.delete('/deleteQuiz/:id', quizController.deleteQuizById)
 
-router.get('/categories', categoryController.getRootCategory);
+router.get('/getAllCategories', categoryController.getAllCategories);
+router.post('/addCategory', categoryController.addCategory);
