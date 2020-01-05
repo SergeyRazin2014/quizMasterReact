@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Modal, Input, Table, Button } from 'antd';
 import { Box } from 'src/components/ui-kit/Box';
 import SunEditor, { buttonList } from 'suneditor-react';
@@ -7,6 +7,7 @@ import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
 
 export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
     const [diagClone, setDiagClone] = useState(null);
+    const [editorText, setEditorText] = useState(!!diagnoz ? diagnoz.text : '');
 
     useEffect(() => {
         if (!diagnoz) {
@@ -23,19 +24,24 @@ export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
     };
 
     const onSave = () => {
+
+        diagClone.text = editorText;
+
         // сохранить quiz
         const findDiagnozIndex = quiz.diagnozes.findIndex(d => d.number === diagClone.number);
+        let newDiagnozes = null;
 
         if (findDiagnozIndex >= 0) {
             const before = quiz.diagnozes.slice(0, findDiagnozIndex);
             const after = quiz.diagnozes.slice(findDiagnozIndex + 1);
-            const newDiagnozes = [...before, diagClone, ...after];
-            setQuiz({ ...quiz, diagnozes: newDiagnozes });
+            newDiagnozes = [...before, diagClone, ...after];
+
         } else {
-            const newDiagnozes = [...quiz.diagnozes, diagClone];
-            setQuiz({ ...quiz, diagnozes: newDiagnozes });
+            newDiagnozes = [...quiz.diagnozes, diagClone];
+            // setQuiz({ ...quiz, diagnozes: newDiagnozes });
         }
 
+        setQuiz({ ...quiz, diagnozes: newDiagnozes });
         setSelectedDiagnoz(null);
     };
 
@@ -126,10 +132,15 @@ export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
     ];
 
     const diagTextChange = (text) => {
-        setDiagClone({ ...diagClone, text });
+        debugger;
+        setEditorText(text);
     };
 
+    // const diagTextChange = (e) => {
+    //     setDiagClone({ ...diagClone, text: e.target.value });
+    // };
 
+    const editorContent = !!diagClone ? diagClone.text : '';
 
     return (
         diagnoz && <Modal
@@ -149,11 +160,12 @@ export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
             <Box mt={10}>
                 <p style={{ color: 'black' }} ><strong>Текст диагноза:</strong></p>
                 {/* <Input.TextArea value={diagClone && diagClone.text} rows={6} onChange={diagTextChange} /> */}
-                <SunEditor lang="ru"
+                <SunEditor
+                    lang="ru"
                     setOptions={{
                         buttonList: buttonList.complex
                     }}
-                    setContents={diagClone && diagClone.text}
+                    setContents={editorContent}
                     onChange={diagTextChange}
                 />
             </Box>

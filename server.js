@@ -5,7 +5,7 @@ const connectDB = require('./config/db');
 // подклюение к монго
 connectDB();
 
-app.use(express.json({ extended: false }));
+app.use(express.json({ limit: '10mb', extended: false }));
 
 app.use(require('./routes'));
 
