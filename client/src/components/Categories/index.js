@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Tree } from 'antd';
 import { useCategories } from 'src/useCases/useCategories';
@@ -9,23 +9,24 @@ import { useQuizTitles } from 'src/useCases/useQuizTitles';
 
 const { TreeNode } = Tree;
 
-// ☻ todo: загрузить с сервера эти тесты
-// const quizTest = [{ id: 1, name: 'Понос' }, { id: 2, name: 'Запор' }, { id: 3, name: 'Хроническая усталость' }];
-
-
 const Categories = () => {
 
 	const dispatch = useDispatch();
 	const { rootCategory, allCategories, isLoaded: categoryLoaded } = useCategories();
 	const { quizTitles, isLoaded: quizTitlesLoaded } = useQuizTitles();
 
-
 	const isLoaded = categoryLoaded && quizTitlesLoaded;
+
+	useEffect(() => {
+		return () => {
+			dispatch({ type: types.SELECT_CATEGORY, payload: null });
+			dispatch({ type: types.CATEGORY_QUIZES, payload: null });
+		};
+	}, []);
 
 	if (!isLoaded) {
 		return <p>LOADING...</p>;
 	}
-
 
 	const renderCategories = (rootCategory) => {
 		return (
@@ -37,7 +38,6 @@ const Categories = () => {
 
 	const categoriesElements = renderCategories(rootCategory);
 
-
 	return (
 
 		<Tree
@@ -48,7 +48,6 @@ const Categories = () => {
 				}
 
 				const selectedCategoryId = selectedCategoriesIds[0];
-				// const category = rootCategory.findByIdDeep({ id: categoryId })[0]; // вместо этого выбрать из списка категорий нужную по categoryId
 				const category = allCategories.find(x => x._id === selectedCategoryId);
 
 				if (!category) {
@@ -57,8 +56,8 @@ const Categories = () => {
 
 				dispatch({ type: types.SELECT_CATEGORY, payload: category });
 
-				const quizes = quizTitles.filter(x => category.quizIds && category.quizIds.some(y => y == x._id));
-				dispatch({ type: types.SELECT_QUIZ, payload: quizes });
+				const quizes = quizTitles.filter(qt => qt.categoryId === category._id);
+				dispatch({ type: types.CATEGORY_QUIZES, payload: quizes });
 			}}
 
 		>

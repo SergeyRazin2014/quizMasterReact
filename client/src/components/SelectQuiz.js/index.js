@@ -7,9 +7,9 @@ import './index.css';
 
 const SelectQuiz = () => {
 
-    const selectedQuiz = useSelectedQuizes();
+    const selectedQuizes = useSelectedQuizes();
 
-    const isShowQuizList = !!(selectedQuiz && selectedQuiz.length);
+    const isShowQuizList = !!(selectedQuizes && selectedQuizes.length);
 
     return (
         <div className='selectQuizWrapper'>
@@ -18,7 +18,7 @@ const SelectQuiz = () => {
                     <Categories />
                 </Col>
                 {isShowQuizList && <Col span={12}>
-                    <Quizes quizList={selectedQuiz} />
+                    <Quizes quizList={selectedQuizes} />
                 </Col>}
             </Row>
         </div>

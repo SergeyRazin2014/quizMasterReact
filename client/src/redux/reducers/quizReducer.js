@@ -16,7 +16,7 @@ export default (state = initialState, action) => {
     const { type, payload } = action;
 
     switch (type) {
-        case types.SELECT_QUIZ:
+        case types.CATEGORY_QUIZES:
             return { ...state, selectedQuiz: payload };
         default: return state;
     }

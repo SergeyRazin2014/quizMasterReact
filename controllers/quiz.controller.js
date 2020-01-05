@@ -27,13 +27,13 @@ module.exports = {
 			let newQuiz = req.body;
 
 			// если есть категория в тесте, то обновить и категорию (добавить в этой категории тест)
-			if (newQuiz.categoryId) {
-				let findCategory = await CategoryModel.findById(newQuiz.categoryId);
-				if (findCategory) {
-					findCategory.quizIds.push(req.body._id);
-					await findCategory.save();
-				}
-			}
+			// if (newQuiz.categoryId) {
+			// 	let findCategory = await CategoryModel.findById(newQuiz.categoryId);
+			// 	if (findCategory) {
+			// 		findCategory.quizIds.push(req.body._id);
+			// 		await findCategory.save();
+			// 	}
+			// }
 
 			let modelForValid = new Quiz(newQuiz);
 			let err = modelForValid.validateSync();
@@ -77,7 +77,7 @@ module.exports = {
 	},
 	async getQuizTitles(req, res) {
 		//выбираем тесты согласно списка номеров и берем только номер и имя теста
-		let quizes = await Quiz.find({}, { number: 1, title: 1, isCorrect: 1 });
+		let quizes = await Quiz.find({}, { number: 1, title: 1, isCorrect: 1, categoryId: 1 });
 		res.json(quizes);
 	},
 };

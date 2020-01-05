@@ -5,7 +5,7 @@ const CategorySchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    quizIds: [{ type: String, }],
+    // quizIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Quiz' }],
     children: [{ type: String, }]
 });
 

@@ -5,7 +5,8 @@ const QuizSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-	categoryId: { type: String },
+	// categoryId: { type: String },
+	categoryId: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
 	questions: [
 		{
 			text: {
