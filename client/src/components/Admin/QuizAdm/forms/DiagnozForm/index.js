@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Input, Table, Button } from 'antd';
 import { Box } from 'src/components/ui-kit/Box';
+import SunEditor, { buttonList } from 'suneditor-react';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
 
 export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
     const [diagClone, setDiagClone] = useState(null);
@@ -39,7 +42,7 @@ export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
     const deleteQuestionFromDiag = (question) => {
         const newAnswers = diagClone.answers.filter(a => a.questionId !== question._id);
         setDiagClone({ ...diagClone, answers: newAnswers });
-    }
+    };
 
     const setQuestionStatus = (question, status) => {
 
@@ -67,6 +70,7 @@ export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
             title: 'Текст',
             dataIndex: 'text',
             key: 'text',
+            ellipsis: true,
 
             render: (text) => {
                 return (<p>{text}</p>);
@@ -121,13 +125,15 @@ export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
 
     ];
 
-    const diagTextChange = (e) => {
-        setDiagClone({ ...diagClone, text: e.target.value });
+    const diagTextChange = (text) => {
+        setDiagClone({ ...diagClone, text });
     };
+
+
 
     return (
         diagnoz && <Modal
-            title={diagnoz.text}
+            title='Настройка диагноза'
             visible={!!diagnoz}
             onOk={onSave}
             onCancel={onCancel}
@@ -142,7 +148,14 @@ export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
             <hr />
             <Box mt={10}>
                 <p style={{ color: 'black' }} ><strong>Текст диагноза:</strong></p>
-                <Input.TextArea value={diagClone && diagClone.text} rows={6} onChange={diagTextChange} />
+                {/* <Input.TextArea value={diagClone && diagClone.text} rows={6} onChange={diagTextChange} /> */}
+                <SunEditor lang="ru"
+                    setOptions={{
+                        buttonList: buttonList.complex
+                    }}
+                    setContents={diagClone && diagClone.text}
+                    onChange={diagTextChange}
+                />
             </Box>
 
         </Modal>);

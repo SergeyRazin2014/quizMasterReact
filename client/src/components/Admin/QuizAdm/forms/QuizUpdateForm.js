@@ -7,6 +7,7 @@ import { api } from 'src/api/index';
 import objectid from 'objectid';
 import { SelectCategory } from 'src/components/Admin/QuizAdm/forms/actions/SelectCategory';
 import { useCategories } from 'src/useCases/useCategories';
+import ReactHtmlParser from 'react-html-parser';
 
 export const QuizUpdateForm = (props) => {
 
@@ -147,7 +148,7 @@ export const QuizUpdateForm = (props) => {
             dataIndex: 'text',
             key: 'text',
             ellipsis: true,
-            render: (text, record) => <Button type='link' onClick={() => setSelectedDiagnoz(record)} >{text}</Button>
+            render: (text, record) => <Button type='link' onClick={() => setSelectedDiagnoz(record)} >{ReactHtmlParser(text)}</Button>
         },
         {
             title: 'Ответы',

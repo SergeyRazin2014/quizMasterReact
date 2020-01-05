@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactHtmlParser from 'react-html-parser';
 
 export const Diagnoz = ({ diagnoz }) => {
     if (!diagnoz) {
@@ -7,7 +8,7 @@ export const Diagnoz = ({ diagnoz }) => {
     return (
         <div>
             <p>Результат:</p>
-            {diagnoz.text}
+            {ReactHtmlParser(diagnoz.text)}
         </div>
     );
 };
