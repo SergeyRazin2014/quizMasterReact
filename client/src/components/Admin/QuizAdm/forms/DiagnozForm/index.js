@@ -161,6 +161,7 @@ export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
                 <p style={{ color: 'black' }} ><strong>Текст диагноза:</strong></p>
                 {/* <Input.TextArea value={diagClone && diagClone.text} rows={6} onChange={diagTextChange} /> */}
                 <SunEditor
+                    // @ts-ignore
                     lang="ru"
                     setOptions={{
                         buttonList: buttonList.complex
