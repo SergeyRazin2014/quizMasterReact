@@ -27,6 +27,7 @@
         "no-return-assign": 0,
         "prefer-template": 0,
         "quotes": 0,
-        "no-extra-boolean-cast": 0
+        "no-extra-boolean-cast": 0,
+        "operator-linebreak": 0
     }
 }

@@ -12,7 +12,6 @@ const Navbar = () => {
     <Layout>
       <Header className="custom">
         <A href="/" className="navItem" >Главная</A>
-        <A href="/categories" className="navItem" >Категории</A>
         <A href="/admin" className="navItem" >Управление</A>
       </Header>
     </Layout>
