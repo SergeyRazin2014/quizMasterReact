@@ -21,9 +21,14 @@ const QuizSchema = new mongoose.Schema({
 	],
 	diagnozes: [
 		{
+			title: {
+				type: String,
+				required: true,
+			},
 			text: {
 				type: String,
-				required: true
+				required: true,
+				
 			},
 
 			answers: [{

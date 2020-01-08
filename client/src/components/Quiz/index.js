@@ -4,7 +4,7 @@ import { Modal } from 'antd';
 import { findDiagnoz } from './infrastructure/quizHelper';
 import { QuestionModal } from './components/QuestionModal';
 import { AnswersList } from 'src/components/Quiz/components/AnswersList';
-import { Diagnoz } from 'src/components/Quiz/components/Diagnoz';
+import { SunEditorShow } from '../ui-kit/SunEditorShow';
 
 const Quiz = (props) => {
 
@@ -76,7 +76,7 @@ const Quiz = (props) => {
 				text={currentQuestion.text} />
 			}
 			<AnswersList answersList={answers} />
-			<Diagnoz diagnoz={findedDiagnoz} />
+			{findedDiagnoz && <SunEditorShow text={findedDiagnoz.text} />}
 		</>
 	);
 };

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { useQuiz } from 'src/useCases/useQuiz';
 import { Box } from 'src/components/ui-kit/Box';
 import { Input, Table, Button } from 'antd';
@@ -7,7 +7,8 @@ import { api } from 'src/api/index';
 import objectid from 'objectid';
 import { SelectCategory } from 'src/components/Admin/QuizAdm/forms/actions/SelectCategory';
 import { useCategories } from 'src/useCases/useCategories';
-import ReactHtmlParser from 'react-html-parser';
+import { navigate } from 'hookrouter';
+
 
 export const QuizUpdateForm = (props) => {
 
@@ -54,6 +55,7 @@ export const QuizUpdateForm = (props) => {
             // создать новый тест
             api.post('/addQuiz', quiz);
         }
+        navigate('/admin/quzes');
     };
 
     // изменить заголовок теста
@@ -91,7 +93,7 @@ export const QuizUpdateForm = (props) => {
 
     // добавить диагноз
     const addDiagnoz = () => {
-        const newDiagnoz = { text: 'Новый диагноз', answers: [] };
+        const newDiagnoz = { title: 'Новый диагноз', text: '', answers: [] };
         setQuiz({ ...quiz, diagnozes: [...quiz.diagnozes, newDiagnoz] });
     };
 
@@ -144,11 +146,11 @@ export const QuizUpdateForm = (props) => {
             width: '5%',
         },
         {
-            title: 'Текст',
-            dataIndex: 'text',
-            key: 'text',
+            title: 'Заголовок диагноза',
+            dataIndex: 'title',
+            key: 'title',
             ellipsis: true,
-            render: (text, record) => <Button type='link' onClick={() => setSelectedDiagnoz(record)} >{ReactHtmlParser(text)}</Button>
+            render: (text, record) => <Button type='link' onClick={() => setSelectedDiagnoz(record)} >{text}</Button>
         },
         {
             title: 'Ответы',
@@ -176,10 +178,6 @@ export const QuizUpdateForm = (props) => {
                 <p>
                     <strong>Id:</strong>  {quiz._id}
                 </p>
-                <p>
-                    <strong>Номер:</strong> {quiz.number}
-                </p>
-
                 <Box>
                     <strong>Заголовок:</strong>
                     <Input value={quiz.title} name='title' onChange={onChangeQuizTitle} required />
@@ -200,6 +198,7 @@ export const QuizUpdateForm = (props) => {
                 </Box>
 
                 <Box mt={20} mb={20}>
+                    <p style={{ color: 'black', fontWeight: "bold" }} >Категория:</p>
                     <SelectCategory quiz={quiz} allCategories={allCategories} setQuiz={setQuiz} />
                 </Box>
 

@@ -26,15 +26,6 @@ module.exports = {
 		try {
 			let newQuiz = req.body;
 
-			// если есть категория в тесте, то обновить и категорию (добавить в этой категории тест)
-			// if (newQuiz.categoryId) {
-			// 	let findCategory = await CategoryModel.findById(newQuiz.categoryId);
-			// 	if (findCategory) {
-			// 		findCategory.quizIds.push(req.body._id);
-			// 		await findCategory.save();
-			// 	}
-			// }
-
 			let modelForValid = new Quiz(newQuiz);
 			let err = modelForValid.validateSync();
 			if (err) {
