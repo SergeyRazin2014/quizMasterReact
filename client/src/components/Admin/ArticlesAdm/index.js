@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Table, Button, Popover, Input, Icon } from 'antd';
+import { Table, Button, Popover, Input, Icon, message } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { useArticles } from 'src/useCases/useArticles';
 import { Box } from 'src/components/ui-kit/Box';
@@ -98,11 +98,8 @@ export const ArticlesAdm = () => {
             dataIndex: 'title',
             key: 'title',
             ellipsis: true,
-
-            render: (text, record) => {
-                return (<A href={`/admin/article/${record._id}`}>{text}</A>);
-            },
-            ...getColumnSearchProps('title')
+            ...getColumnSearchProps('title'),
+            render: (text, record) => <A href={`/admin/article/${record._id}`}>{text}</A>
         },
 
         {
@@ -111,7 +108,11 @@ export const ArticlesAdm = () => {
             render: (text, record) => {
                 const ref = `/articleShow/${record._id}`;
                 return (
-                    <p style={{ display: 'flex', justifyContent: 'space-between' }}>{ref} <Button icon="copy" onClick={() => navigator.clipboard.writeText(ref)} /></p>
+                    <p style={{ display: 'flex', justifyContent: 'space-between' }}>{ref} <Button icon="copy" onClick={() => {
+                        navigator.clipboard.writeText(ref).then(() => {
+                            message.success('скопировал в буфер: ' + ref)
+                        });
+                    }} /></p>
                 );
             }
         },
