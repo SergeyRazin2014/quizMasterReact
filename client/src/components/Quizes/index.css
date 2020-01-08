@@ -1,6 +1,8 @@
 .itemName {
 	color: #025bf2;
 	font-weight: bold;
+	display: flex;
+	justify-content: space-between;
 }
 
 .selectQuizTitle {

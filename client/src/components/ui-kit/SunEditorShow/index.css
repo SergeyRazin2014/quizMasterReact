@@ -1,0 +1,9 @@
+.sun-editor .se-container .se-resizing-bar {
+	display: none;
+}
+
+.se-wrapper,
+.sun-editor {
+	border-radius: 4px;
+	
+}

@@ -1,7 +1,6 @@
 import React from 'react';
 import { List } from 'antd';
 
-
 const ListItem = (item) => {
 
     return (
@@ -18,11 +17,13 @@ export const AnswersList = ({ answersList }) => {
         return null;
     }
 
-    return <List
-        size="small"
-        header={<div className='selectQuizTitle' >Результат:</div>}
-        bordered
-        dataSource={answersList}
-        renderItem={ListItem}
-    />;
+    return (
+        <List
+            size="small"
+            header={<div className='selectQuizTitle' >Результат тестирования:</div>}
+            bordered
+            dataSource={answersList}
+            renderItem={ListItem}
+        />
+    );
 }

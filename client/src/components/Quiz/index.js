@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useQuiz } from 'src/useCases/useQuiz';
-import { Modal } from 'antd';
 import { findDiagnoz } from './infrastructure/quizHelper';
 import { QuestionModal } from './components/QuestionModal';
 import { AnswersList } from 'src/components/Quiz/components/AnswersList';
 import { SunEditorShow } from '../ui-kit/SunEditorShow';
+import { Container } from 'src/components/ui-kit/Container';
+import { Box } from 'src/components/ui-kit/Box';
 
 const Quiz = (props) => {
 
@@ -29,13 +30,6 @@ const Quiz = (props) => {
 			setFindedDiagnoz(diagnosFind);
 		}
 	}, [answers]);
-
-	// показываю диагноз если найден
-	useEffect(() => {
-		if (findedDiagnoz) {
-			Modal.success({ content: findedDiagnoz.text });
-		}
-	}, [findedDiagnoz]);
 
 	const setAnswerStatus = ({ status }) => {
 		setModalVisible(false);
@@ -67,7 +61,7 @@ const Quiz = (props) => {
 	};
 
 	return (
-		<>
+		<Container>
 			{!findedDiagnoz && hasQuestions && <QuestionModal
 				isModalVisible={isModalVisible}
 				okClick={okClick}
@@ -76,8 +70,8 @@ const Quiz = (props) => {
 				text={currentQuestion.text} />
 			}
 			<AnswersList answersList={answers} />
-			{findedDiagnoz && <SunEditorShow text={findedDiagnoz.text} />}
-		</>
+			{findedDiagnoz && <Box mt={10} ><SunEditorShow text={findedDiagnoz.text} /></Box>}
+		</Container>
 	);
 };
 
