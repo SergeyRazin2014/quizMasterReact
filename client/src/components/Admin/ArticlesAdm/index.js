@@ -109,7 +109,10 @@ export const ArticlesAdm = () => {
             title: 'reff',
             key: 'reff',
             render: (text, record) => {
-                return <p>{`/articleShow/${record._id}`}</p>;
+                const ref = `/articleShow/${record._id}`;
+                return (
+                    <p style={{ display: 'flex', justifyContent: 'space-between' }}>{ref} <Button icon="copy" onClick={() => navigator.clipboard.writeText(ref)} /></p>
+                );
             }
         },
 
