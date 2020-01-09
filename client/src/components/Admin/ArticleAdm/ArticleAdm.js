@@ -8,6 +8,7 @@ import SunEditor, { buttonList } from 'suneditor-react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'suneditor/dist/css/suneditor.min.css';
 import { navigate } from 'hookrouter';
+import { openNotification, notificationTypes } from 'src/components/ui-kit/Modal/Notification';
 
 export const ArticleAdm = ({ articleId: _id }) => {
     const { article, setArticle, isLoaded } = useArticle({ articleId: _id });
@@ -23,10 +24,10 @@ export const ArticleAdm = ({ articleId: _id }) => {
 
     const showSaveResult = (response) => {
         if (response.status === 200) {
-            alert('статья успешно сохранена');
+            openNotification({ message: 'статья успешно сохранена', type: notificationTypes.success });
             navigate('/admin/articles');
         } else {
-            alert('Ошибка сохранения статьи ' + response.data);
+            openNotification({ message: `Ошибка сохранения статьи: ${response.data}`, type: notificationTypes.error });
         }
     };
 
@@ -59,7 +60,6 @@ export const ArticleAdm = ({ articleId: _id }) => {
                 </Box>
                 <Box mt={10}>
                     <LabelBox>Текст статьи:</LabelBox>
-                    {/* <Input.TextArea value={article.text} onChange={changeArticleText} /> */}
                     <SunEditor
                         // @ts-ignore
                         lang="ru"
@@ -72,6 +72,7 @@ export const ArticleAdm = ({ articleId: _id }) => {
                 </Box>
                 <Box mt={20}>
                     <Button htmlType="submit" type="primary" >Сохранить</Button>
+                    <Button style={{ marginLeft: '10px' }} type="secondary" onClick={() => navigate('/admin/articles')} >Отмена</Button>
                 </Box>
             </form>
         </Box>

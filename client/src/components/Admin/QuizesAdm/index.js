@@ -1,3 +1,5 @@
+// @ts-nocheck
+/* eslint-disable no-restricted-globals */
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import { Table, Input, Button, Icon, Popover } from 'antd';
@@ -6,6 +8,8 @@ import { useQuizTitles } from 'src/useCases/useQuizTitles';
 import { A, navigate } from 'hookrouter';
 import { api } from 'src/api';
 import { Box } from 'src/components/ui-kit/Box';
+import { showConfirm, modalStatuses } from 'src/components/ui-kit/Modal/Confirm';
+
 
 export const QuizesAdm = () => {
 
@@ -129,15 +133,16 @@ export const QuizesAdm = () => {
             width: `5%`,
             render: (text, record) => (
                 <Button icon="delete" shape="circle" type="danger" onClick={() => {
-                    api.delete(`/deleteQuiz/${record._id}`).then((respons) => {
-                        if (respons.status === 200) {
-                            alert('Тест успешно удален');
-                            // eslint-disable-next-line no-restricted-globals
-                            location.reload();
-                        } else {
-                            alert('Ошибка удаления теста: ' + respons.data);
-                        }
-                    });
+                    showConfirm({ title: 'Вы действительно хотите удалить тест?' })
+                        .then((status) => {
+                            if (status === modalStatuses.ok) {
+                                api.delete(`/deleteQuiz/${record._id}`).then((respons) => {
+                                    if (respons.status === 200) {
+                                        location.reload();
+                                    }
+                                });
+                            }
+                        });
                 }} />
             )
         },

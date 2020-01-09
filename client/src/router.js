@@ -16,7 +16,7 @@ const Router = {
 	'/admin/categories': () => <Categories />,
 	'/selectQuiz': () => <SelectQuiz />,
 	'/admin': () => <Dashboard />,
-	'/admin/quzes': () => <QuizesAdm />,
+	'/admin/quizes': () => <QuizesAdm />,
 	'/admin/quiz/:quizId': ({ quizId }) => <QuizUpdateForm quizId={quizId} />,
 	'/admin/addQuiz': () => <QuizUpdateForm quizId={null} />,
 	'/admin/articles': () => <ArticlesAdm />,

@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import React, { useState } from 'react';
 import { Table, Button, Popover, Input, Icon, message } from 'antd';
 import Highlighter from 'react-highlight-words';
@@ -5,6 +6,7 @@ import { useArticles } from 'src/useCases/useArticles';
 import { Box } from 'src/components/ui-kit/Box';
 import { A, navigate } from 'hookrouter';
 import { api } from 'src/api';
+import { showConfirm, modalStatuses } from 'src/components/ui-kit/Modal/Confirm';
 
 export const ArticlesAdm = () => {
 
@@ -68,11 +70,9 @@ export const ArticlesAdm = () => {
             }
         },
 
-        // @ts-ignore
         render: text => (searchInfo.searchedColumn === dataIndex ? (
             <Highlighter
                 highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-                // @ts-ignore
                 searchWords={[searchInfo.searchText]}
                 autoEscape
                 textToHighlight={text.toString()}
@@ -129,15 +129,19 @@ export const ArticlesAdm = () => {
             key: 'delete',
             width: '3%',
             render: (text, record) => <Button icon="delete" shape="circle" type="danger" onClick={() => {
-                api.delete(`/deleteArticle/${record._id}`).then(response => {
-                    if (response.status === 200) {
-                        alert('Статья успешно удалена');
-                        // eslint-disable-next-line no-restricted-globals
-                        location.reload();
-                    } else {
-                        alert('Ошибка удаления статьи: ' + response.data);
+
+                showConfirm({ title: "Вы действительно хотите удалить статью?" }).then((status) => {
+                    if (status === modalStatuses.ok) {
+                        api.delete(`/deleteArticle/${record._id}`).then(response => {
+                            if (response.status === 200) {
+                                location.reload();
+                            }
+                        });
                     }
                 });
+
+
+
             }} />
         }
     ];

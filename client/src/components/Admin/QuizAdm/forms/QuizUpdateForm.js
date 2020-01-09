@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { useQuiz } from 'src/useCases/useQuiz';
 import { Box } from 'src/components/ui-kit/Box';
-import { Input, Table, Button } from 'antd';
+import { Input, Table, Button, notification } from 'antd';
 import { DiagnozForm } from './DiagnozForm';
 import { api } from 'src/api/index';
 import objectid from 'objectid';
 import { SelectCategory } from 'src/components/Admin/QuizAdm/forms/actions/SelectCategory';
 import { useCategories } from 'src/useCases/useCategories';
 import { navigate } from 'hookrouter';
+import { showConfirm, modalStatuses } from 'src/components/ui-kit/Modal/Confirm';
+import { openNotification, notificationTypes } from 'src/components/ui-kit/Modal/Notification';
 
 
 export const QuizUpdateForm = (props) => {
@@ -55,7 +57,7 @@ export const QuizUpdateForm = (props) => {
             // создать новый тест
             api.post('/addQuiz', quiz);
         }
-        navigate('/admin/quzes');
+        navigate('/admin/quizes');
     };
 
     // изменить заголовок теста
@@ -75,7 +77,11 @@ export const QuizUpdateForm = (props) => {
         // если хоть один из диагнозов ссылается на удаляемый вопрос
         const findDiagnos = quiz.diagnozes.find(d => d.answers.some(a => a.questionId === record._id));
         if (findDiagnos) {
-            alert(`Диагноз: "${findDiagnos.text}" ссылается на данный вопрос.`);
+            openNotification({
+                message: `Нельзя удалить данный вопрос.`,
+                description: `Диагноз: "${findDiagnos.title}" ссылается на данный вопрос. Сначала нужно удалить этот вопрос из диагноза или удалить диагноз целиком.`,
+                type: notificationTypes.error
+            });
             return;
         }
 
@@ -99,8 +105,10 @@ export const QuizUpdateForm = (props) => {
 
     // удалить диагноз
     const deleteDiagnoz = (record) => {
+
         const newDiagnoses = quiz.diagnozes.filter(x => x.number !== record.number);
         setQuiz({ ...quiz, diagnozes: [...newDiagnoses] });
+
     };
 
     // столбцы вопросов
@@ -168,7 +176,14 @@ export const QuizUpdateForm = (props) => {
             title: '',
             key: 'delete',
             width: '3%',
-            render: (text, record) => <Button icon="delete" shape="circle" type="danger" onClick={() => deleteDiagnoz(record)} />
+            render: (text, record) => <Button icon="delete" shape="circle" type="danger" onClick={() => {
+                showConfirm({ title: "Вы действительно хотите удалить диагноз?" })
+                    .then((status) => {
+                        if (status === modalStatuses.ok) {
+                            deleteDiagnoz(record);
+                        }
+                    });
+            }} />
         }
     ];
 
@@ -204,6 +219,7 @@ export const QuizUpdateForm = (props) => {
 
                 <Box mt={20}>
                     <Button htmlType="submit" type="primary" >Сохранить</Button>
+                    <Button style={{ marginLeft: '10px' }} type="secondary" onClick={() => navigate('/admin/quizes')}>Отмена</Button>
                 </Box>
             </form>
             <DiagnozForm diagnoz={selectedDiagnoz} setSelectedDiagnoz={setSelectedDiagnoz} quiz={quiz} setQuiz={setQuiz} />
