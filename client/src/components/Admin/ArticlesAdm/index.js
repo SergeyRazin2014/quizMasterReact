@@ -7,6 +7,7 @@ import { Box } from 'src/components/ui-kit/Box';
 import { A, navigate } from 'hookrouter';
 import { api } from 'src/api';
 import { showConfirm, modalStatuses } from 'src/components/ui-kit/Modal/Confirm';
+import { Spinner } from 'src/components/ui-kit/Spinner';
 
 export const ArticlesAdm = () => {
 
@@ -139,15 +140,12 @@ export const ArticlesAdm = () => {
                         });
                     }
                 });
-
-
-
             }} />
         }
     ];
 
     if (!isLoading) {
-        return <p>Loading...</p>;
+        return <Spinner />;
     }
 
     return (

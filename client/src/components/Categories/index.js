@@ -6,6 +6,7 @@ import 'antd/dist/antd.css';
 import './category.css';
 import { types } from 'src/redux/reducers/types';
 import { useQuizTitles } from 'src/useCases/useQuizTitles';
+import { Spinner } from '../ui-kit/Spinner';
 
 const { TreeNode } = Tree;
 
@@ -25,7 +26,7 @@ const Categories = () => {
 	}, []);
 
 	if (!isLoaded) {
-		return <p>LOADING...</p>;
+		return <Spinner />;
 	}
 
 	const renderCategories = (rootCategory) => {

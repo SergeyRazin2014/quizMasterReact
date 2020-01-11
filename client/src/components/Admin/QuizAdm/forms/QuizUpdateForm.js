@@ -10,6 +10,7 @@ import { useCategories } from 'src/useCases/useCategories';
 import { navigate } from 'hookrouter';
 import { showConfirm, modalStatuses } from 'src/components/ui-kit/Modal/Confirm';
 import { openNotification, notificationTypes } from 'src/components/ui-kit/Modal/Notification';
+import { Spinner } from 'src/components/ui-kit/Spinner';
 
 
 export const QuizUpdateForm = (props) => {
@@ -22,7 +23,7 @@ export const QuizUpdateForm = (props) => {
     const isLoaded = isQuizLoaded && isCategoryLoaded;
 
     if (!isLoaded) {
-        return <p>Loading...</p>;
+        return <Spinner />;
     }
 
     // ключи для вопросов

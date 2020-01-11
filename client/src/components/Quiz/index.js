@@ -10,6 +10,7 @@ import { Box } from 'src/components/ui-kit/Box';
 import { Button } from 'antd';
 import { navigate } from 'hookrouter';
 import './index.css';
+import { Spinner } from '../ui-kit/Spinner';
 
 const Quiz = (props) => {
 
@@ -52,7 +53,7 @@ const Quiz = (props) => {
 
 
 	if (!isLoaded) {
-		return <p>Loading...</p>;
+		return <Spinner />;
 	}
 
 

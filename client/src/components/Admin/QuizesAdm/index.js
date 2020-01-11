@@ -9,6 +9,7 @@ import { A, navigate } from 'hookrouter';
 import { api } from 'src/api';
 import { Box } from 'src/components/ui-kit/Box';
 import { showConfirm, modalStatuses } from 'src/components/ui-kit/Modal/Confirm';
+import { Spinner } from 'src/components/ui-kit/Spinner';
 
 
 export const QuizesAdm = () => {
@@ -86,7 +87,7 @@ export const QuizesAdm = () => {
     });
 
     if (!isLoaded) {
-        return <div>Loading...</div>;
+        return <Spinner />;
     }
 
     quizTitles.forEach((x, index) => {

@@ -9,6 +9,7 @@ import SunEditor, { buttonList } from 'suneditor-react';
 import 'suneditor/dist/css/suneditor.min.css';
 import { navigate } from 'hookrouter';
 import { openNotification, notificationTypes } from 'src/components/ui-kit/Modal/Notification';
+import { Spinner } from 'src/components/ui-kit/Spinner';
 
 export const ArticleAdm = ({ articleId: _id }) => {
     const { article, setArticle, isLoaded } = useArticle({ articleId: _id });
@@ -46,7 +47,7 @@ export const ArticleAdm = ({ articleId: _id }) => {
     };
 
     if (!isLoaded) {
-        return <p>Loading...</p>;
+        return <Spinner />;
     }
 
     const editorContent = article.text;
