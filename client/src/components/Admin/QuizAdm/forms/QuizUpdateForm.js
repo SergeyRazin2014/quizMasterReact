@@ -48,17 +48,34 @@ export const QuizUpdateForm = (props) => {
         });
     });
 
+    const showSaveResult = (response) => {
+        if (response.status === 200 && !response.data.errors) {
+            openNotification({ message: 'Тест сохранен успешно', type: notificationTypes.success });
+            return;
+        }
+
+        if (response.data && response.data.errors && response.data.errors.text) {
+            openNotification({ message: `Ошибка сохранения теста: ${response.data.errors.text.message}`, type: notificationTypes.error });
+        } else {
+            openNotification({ message: `Ошибка сохранения теста`, description: '', type: notificationTypes.error });
+        }
+    };
+
     // отправка формы
     const handleSubmit = (e) => {
         e.preventDefault();
         if (quiz._id) {
             // обновить тест
-            api.post('/updateQuiz', quiz);
+            api.post('/updateQuiz', quiz).then(response => {
+                showSaveResult(response);
+            });
         } else {
             // создать новый тест
-            api.post('/addQuiz', quiz);
+            api.post('/addQuiz', quiz).then(response => {
+                showSaveResult(response);
+            });
         }
-        navigate('/admin/quizes');
+        // navigate('/admin/quizes');
     };
 
     // изменить заголовок теста

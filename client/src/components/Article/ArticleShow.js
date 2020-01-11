@@ -1,6 +1,5 @@
 import React from 'react';
 import { useArticle } from 'src/useCases/useArticle';
-import { Box } from '../ui-kit/Box';
 import { SunEditorShow } from '../ui-kit/SunEditorShow';
 import { Container } from '../ui-kit/Container';
 import { Spinner } from '../ui-kit/Spinner';
@@ -11,6 +10,10 @@ export const ArticleShow = ({ articleId }) => {
 
     if (!isLoaded) {
         return <Spinner />;
+    }
+
+    if (isLoaded && !article) {
+        return <h2>Статья не существует, возможно она была удалена.</h2>
     }
 
     return (

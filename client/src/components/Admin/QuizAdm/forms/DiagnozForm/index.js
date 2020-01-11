@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Input, Table, Button } from 'antd';
 import { Box } from 'src/components/ui-kit/Box';
 import SunEditor, { buttonList } from 'suneditor-react';
@@ -8,7 +8,6 @@ import 'suneditor/dist/css/suneditor.min.css';
 
 export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
     const [diagClone, setDiagClone] = useState(null);
-    const [editorText, setEditorText] = useState(!!diagnoz ? diagnoz.text : '');
 
     useEffect(() => {
         if (!diagnoz) {
@@ -26,8 +25,9 @@ export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
 
     const onSave = () => {
 
-        // беру текст из ричэдитора, т.к. рич эдитор кеширует сущьность теста и на нее ссылаться не может при изменении
-        diagClone.text = editorText;
+        // этот костыль нужен т.к. метод onChange у sunEditor срабатывает с задержкой и если нажать submit очень быстро после исправления текста, то внесенные изменения не успеют папасть в отправляемые данные
+        const editorValue = document.getElementsByClassName('se-wrapper-inner se-wrapper-wysiwyg sun-editor-editable')[0].innerHTML;
+        diagClone.text = editorValue;
 
         // сохранить quiz
         const findDiagnozIndex = quiz.diagnozes.findIndex(d => d.number === diagClone.number);
@@ -133,11 +133,6 @@ export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
 
     ];
 
-    // изменить текст диагноза
-    const diagTextChange = (text) => {
-        setEditorText(text);
-    };
-
     // изменить заголовок диагзноза
     const diagTitleChange = (e) => {
         setDiagClone({ ...diagClone, title: e.target.value });
@@ -176,7 +171,6 @@ export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
                         buttonList: buttonList.complex
                     }}
                     setContents={editorContent}
-                    onChange={diagTextChange}
                 />
             </Box>
 

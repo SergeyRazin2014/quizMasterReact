@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Input, Button } from 'antd';
 import { Box } from 'src/components/ui-kit/Box';
 import { useArticle } from 'src/useCases/useArticle';
@@ -13,32 +13,38 @@ import { Spinner } from 'src/components/ui-kit/Spinner';
 
 export const ArticleAdm = ({ articleId: _id }) => {
     const { article, setArticle, isLoaded } = useArticle({ articleId: _id });
-    const [editorText, setEditorText] = useState(!!article ? article.text : '');
-
-    const editorTextChange = (text) => {
-        setEditorText(text);
-    };
 
     const changeArticleTitle = (e) => {
         setArticle({ ...article, title: e.target.value });
     };
 
     const showSaveResult = (response) => {
-        if (response.status === 200) {
+
+        if (response.status === 200 && !response.data.errors) {
             openNotification({ message: 'статья успешно сохранена', type: notificationTypes.success });
-            navigate('/admin/articles');
-        } else {
-            openNotification({ message: `Ошибка сохранения статьи: ${response.data}`, type: notificationTypes.error });
+            // navigate('/admin/articles');
+            return;
         }
+
+        if (response.data && response.data.errors && response.data.errors.text) {
+            openNotification({ message: `Ошибка сохранения статьи: ${response.data.errors.text.message}`, type: notificationTypes.error });
+        } else {
+            openNotification({ message: `Ошибка сохранения статьи`, description: '', type: notificationTypes.error });
+        }
+
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        article.text = editorText;
+
+        // этот костыль нужен т.к. метод onChange у sunEditor срабатывает с задержкой и если нажать submit очень быстро после исправления текста, то внесенные изменения не успеют папасть в отправляемые данные
+        const editorValue = e.target.getElementsByClassName('se-wrapper-inner se-wrapper-wysiwyg sun-editor-editable')[0].innerHTML;
+        article.text = editorValue;
+
         if (_id) {
             api.post('/updateArticle', article).then(response => {
                 showSaveResult(response);
-            })
+            });
         } else {
             api.post('/addArticle', article).then(response => {
                 showSaveResult(response);
@@ -68,7 +74,6 @@ export const ArticleAdm = ({ articleId: _id }) => {
                             buttonList: buttonList.complex
                         }}
                         setContents={editorContent}
-                        onChange={editorTextChange}
                     />
                 </Box>
                 <Box mt={20}>
