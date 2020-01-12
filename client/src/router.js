@@ -9,6 +9,8 @@ import { QuizUpdateForm } from 'src/components/Admin/QuizAdm/forms/QuizUpdateFor
 import { ArticlesAdm } from 'src/components/Admin/ArticlesAdm';
 import { ArticleAdm } from './components/Admin/ArticleAdm/ArticleAdm';
 import { ArticleShow } from './components/Article/ArticleShow';
+import { LoginForm } from './components/Auth/Login';
+import { RegisterForm } from './components/Auth/Register';
 
 const Router = {
 	'/': () => <Home />,
@@ -22,7 +24,9 @@ const Router = {
 	'/admin/articles': () => <ArticlesAdm />,
 	'/admin/article/:id': ({ id }) => <ArticleAdm articleId={id} />,
 	'/articleShow/:id': ({ id }) => <ArticleShow articleId={id} />,
-	'/admin/addArticle': () => <ArticleAdm articleId={null} />
+	'/admin/addArticle': () => <ArticleAdm articleId={null} />,
+	'/login': () => <LoginForm />,
+	'/register': () => <RegisterForm />
 };
 
 export default Router;

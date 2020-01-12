@@ -22,7 +22,6 @@ export const ArticleAdm = ({ articleId: _id }) => {
 
         if (response.status === 200 && !response.data.errors) {
             openNotification({ message: 'статья успешно сохранена', type: notificationTypes.success });
-            // navigate('/admin/articles');
             return;
         }
 
