@@ -1,5 +1,4 @@
 const Quiz = require('../models/quiz');
-const CategoryModel = require('../models/category');
 
 module.exports = {
 	async getQuizByNumber(req, res) {

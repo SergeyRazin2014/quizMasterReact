@@ -4,15 +4,36 @@ import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import 'antd/dist/antd.css';
 import './index.css';
 import { Box } from 'src/components/ui-kit/Box';
+import { api } from 'src/api';
+import { openNotification, notificationTypes } from 'src/components/ui-kit/Modal/Notification';
+import { navigate } from 'hookrouter';
 
 const MyRegisterForm = (props) => {
 
     const handleSubmit = e => {
         e.preventDefault();
         props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
+
+            if (err) {
+                openNotification({ message: 'Ошибка регистрации', description: 'Должны быить заполнены все поля формы регистрации', type: notificationTypes.error });
+                return;
             }
+
+            api.post('/register', values).then(response => {
+                if (response.statusText === 'Created') {
+                    openNotification({ message: 'Новый пользователь зарегистрирован успешно', type: notificationTypes.success });
+                    navigate('/');
+                } else {
+                    openNotification({ message: 'Ошибка регистрации, попробуйте снова', type: notificationTypes.error });
+                }
+            }).catch(err => {
+                if (err && err.response && err.response.data && err.response.data.message) {
+                    openNotification({ message: "Ошибка регистрации.", description: err.response.data.message, type: notificationTypes.error });
+                } else {
+                    openNotification({ message: "Ошибка регистрации." });
+                }
+
+            });
         });
     };
 
