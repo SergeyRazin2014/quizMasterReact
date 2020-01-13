@@ -5,9 +5,10 @@ const jwt = require('jsonwebtoken')
 const config = require('config');
 
 module.exports = {
+
+    // регистрация
     async addUser(req, res) {
         try {
-
             const errors = validationResult(req);  //получаем ошибки валидации
             //если есть ошибки валидации, то шлем их пользователю
             if (!errors.isEmpty()) {
@@ -35,6 +36,7 @@ module.exports = {
         }
     },
 
+    // логин
     async login(req, res) {
         try {
             const errors = validationResult(req);
@@ -68,6 +70,17 @@ module.exports = {
             res.json({ token, userId: user._id });
         } catch (err) {
             res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' });
+        }
+    },
+
+    // получение юзера через id в токене
+    async getAuthUser(req, res) {
+        try {
+            const user = await User.findById(req.userId).select('-password');
+            res.json(user);
+        } catch (err) {
+            console.error(err.message);
+            res.status(500).send('Server error');
         }
     }
 }

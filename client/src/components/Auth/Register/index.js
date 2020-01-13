@@ -6,7 +6,7 @@ import './index.css';
 import { Box } from 'src/components/ui-kit/Box';
 import { api } from 'src/api';
 import { openNotification, notificationTypes } from 'src/components/ui-kit/Modal/Notification';
-import { navigate } from 'hookrouter';
+import { navigate, A } from 'hookrouter';
 
 const MyRegisterForm = (props) => {
 
@@ -79,7 +79,6 @@ const MyRegisterForm = (props) => {
                     )}
                 </Form.Item>
 
-
                 <Form.Item>
                     {getFieldDecorator('password2', {
                         rules: [
@@ -101,9 +100,9 @@ const MyRegisterForm = (props) => {
                         initialValue: true,
                     })(<Checkbox>Запомнить меня</Checkbox>)}
                     <Button type="primary" htmlType="submit" className="login-form-button">
-                        Войти
+                        Регистрация
                     </Button>
-                    Или <a href="">Зарегистрируйтесь!</a>
+                    Или <A href="/login">Войти!</A>
                 </Form.Item>
             </Form>
         </Box >

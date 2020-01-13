@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
-const homeController = require('./controllers/home.controller');
 const quizController = require('./controllers/quiz.controller');
 const categoryController = require('./controllers/category.controller');
 const articleController = require('./controllers/article.controller');
 const authController = require('./controllers/auth.controller');
+const auth = require('./middleware/auth');
 
 
 module.exports = router;
@@ -18,27 +18,26 @@ const addUserRules = [
 
 // роуты----------------------------------↓
 
-router.get('/', homeController.getHome);
-
 // тесты
-router.get('/getQuizByNumber/:number', quizController.getQuizByNumber);
-router.post('/addQuiz', quizController.addQiuz);
-router.post('/updateQuiz', quizController.updateQuiz);
-router.get('/getQuizById/:id', quizController.getQuizById);
-router.get('/getQuizTitles', quizController.getQuizTitles);
-router.delete('/deleteQuiz/:id', quizController.deleteQuizById)
+router.get('/getQuizByNumber/:number', auth, quizController.getQuizByNumber);
+router.post('/addQuiz', auth, quizController.addQiuz);
+router.post('/updateQuiz', auth, quizController.updateQuiz);
+router.get('/getQuizById/:id', auth, quizController.getQuizById);
+router.get('/getQuizTitles', auth, quizController.getQuizTitles);
+router.delete('/deleteQuiz/:id', auth, quizController.deleteQuizById)
 
 // категории
-router.get('/getAllCategories', categoryController.getAllCategories);
-router.post('/addCategory', categoryController.addCategory);
+router.get('/getAllCategories', auth, categoryController.getAllCategories);
+router.post('/addCategory', auth, categoryController.addCategory);
 
 // статьи
-router.post('/addArticle', articleController.addArticle);
-router.post('/updateArticle', articleController.updateArticle);
-router.delete('/deleteArticle/:id', articleController.deleteArticle)
-router.get('/getAllArticles', articleController.getAllArticles);
-router.get('/getArticleById/:id', articleController.getArticleById);
+router.post('/addArticle', auth, articleController.addArticle);
+router.post('/updateArticle', auth, articleController.updateArticle);
+router.delete('/deleteArticle/:id', auth, articleController.deleteArticle)
+router.get('/getAllArticles', auth, articleController.getAllArticles);
+router.get('/getArticleById/:id', auth, articleController.getArticleById);
 
 // users
 router.post('/register', addUserRules, authController.addUser);
 router.post('/login', addUserRules, authController.login);
+router.get('/authUser', auth, authController.getAuthUser)

@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
-
-import 'antd/dist/antd.css';
-import './index.css';
+import { openNotification, notificationTypes } from 'src/components/ui-kit/Modal/Notification';
+import { navigate, A } from 'hookrouter';
 import { Box } from 'src/components/ui-kit/Box';
+import { api } from 'src/api';
+// import { useLocalStorage } from 'src/useCases/useLocalstorage';
+
+import './index.css';
+import 'antd/dist/antd.css';
+import { setAxiosAuthToken } from 'src/utils/setAxiosAuthToken';
 
 const MyLoginForm = (props) => {
 
@@ -11,7 +16,23 @@ const MyLoginForm = (props) => {
         e.preventDefault();
         props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
+                api.post('/login', values).then(response => {
+                    if (response.status === 200) {
+                        openNotification({ message: 'Вход выполнен успешно', type: notificationTypes.success });
+                        setAxiosAuthToken(response.data.token);
+                        navigate('/');
+                    } else {
+                        openNotification({ message: 'Ошибка лгина, попробуйте снова', type: notificationTypes.error });
+                        setAxiosAuthToken(null);
+                    }
+                }).catch(err => {
+                    if (err && err.response && err.response.data && err.response.data.message) {
+                        openNotification({ message: "Неверный логин или пароль", description: err.response.data.message, type: notificationTypes.error });
+                    } else {
+                        openNotification({ message: "Ошибка логина" });
+                    }
+                    setAxiosAuthToken(null);
+                });
             }
         });
     };
@@ -54,7 +75,7 @@ const MyLoginForm = (props) => {
                     <Button type="primary" htmlType="submit" className="login-form-button">
                         Войти
                     </Button>
-                    Или <a href="">Зарегистрируйтесь!</a>
+                    Или <A href="/register">Зарегистрируйтесь!</A>
                 </Form.Item>
             </Form>
         </Box >

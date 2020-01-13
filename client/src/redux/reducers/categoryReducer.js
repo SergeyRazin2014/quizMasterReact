@@ -13,7 +13,7 @@ export const useSelectedCategoryId = () => {
 export const useLoadedCategories = () => {
     const result = useSelector(store => store.categoryReducer.categories);
     return result;
-}
+};
 
 // получить ошибки категорий
 export const useCategoriesErrors = () => {
@@ -25,9 +25,9 @@ export const useCategoriesErrors = () => {
 export const useIsCategoryLoaded = () => {
     const result = useSelector(store => store.categoryReducer.isLoaded);
     return result;
-}
+};
 
-const initialState = { selectedCategory: null, isLoaded: false, errors: null, categories: null }
+const initialState = { selectedCategory: null, isLoaded: false, errors: null, categories: null };
 
 // редюсер
 export default (state = initialState, action) => {
