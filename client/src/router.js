@@ -11,6 +11,7 @@ import { ArticleAdm } from './components/Admin/ArticleAdm/ArticleAdm';
 import { ArticleShow } from './components/Article/ArticleShow';
 import { LoginForm } from './components/Auth/Login';
 import { RegisterForm } from './components/Auth/Register';
+import { userRoles } from './common/userRoles';
 
 const Router = {
 	'/': () => <Home />,
@@ -29,4 +30,21 @@ const Router = {
 	'/register': () => <RegisterForm />
 };
 
-export default Router;
+const userRouter = {
+	'/': () => <Home />,
+	'/quiz/:id': ({ id }) => <Quiz id={id} />,
+	'/selectQuiz': () => <SelectQuiz />,
+	'/articleShow/:id': ({ id }) => <ArticleShow articleId={id} />,
+	'/login': () => <LoginForm />,
+	'/register': () => <RegisterForm />
+};
+
+const getRouter = (userRole) => {
+	if (userRole === userRoles.admin) {
+		return Router;
+	}
+	return userRouter;
+
+};
+
+export default getRouter;

@@ -6,6 +6,11 @@ export const useIsAuth = () => {
     return result;
 };
 
+export const useCurrentUser = () => {
+    const result = useSelector(store => store.authReducer.user);
+    return result;
+};
+
 const initialState = {
     token: localStorage.getItem('token'),
     isAuth: null,

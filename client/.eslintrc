@@ -28,6 +28,7 @@
         "prefer-template": 0,
         "quotes": 0,
         "no-extra-boolean-cast": 0,
-        "operator-linebreak": 0
+        "operator-linebreak": 0,
+        "prefer-destructuring":0
     }
 }

@@ -28,8 +28,14 @@ module.exports = {
 
             const user = new User({ login, password: hashedPassword });
             await user.save();
-            res.status(201).json({ message: 'Пользователь создан' });
 
+
+            const token = jwt.sign(
+                { userId: user._id }, config.get('jwtSecret'),
+                { expiresIn: '1h' }
+            );
+
+            res.status(201).json({ token, userId: user._id, message: 'Пользователь создан' });
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' })

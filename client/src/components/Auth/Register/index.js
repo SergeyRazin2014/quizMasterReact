@@ -1,12 +1,13 @@
 import React from 'react';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
-
-import 'antd/dist/antd.css';
-import './index.css';
+import { setAxiosAuthToken } from 'src/utils/setAxiosAuthToken';
 import { Box } from 'src/components/ui-kit/Box';
 import { api } from 'src/api';
 import { openNotification, notificationTypes } from 'src/components/ui-kit/Modal/Notification';
 import { navigate, A } from 'hookrouter';
+
+import './index.css';
+import 'antd/dist/antd.css';
 
 const MyRegisterForm = (props) => {
 
@@ -22,6 +23,7 @@ const MyRegisterForm = (props) => {
             api.post('/register', values).then(response => {
                 if (response.statusText === 'Created') {
                     openNotification({ message: 'Новый пользователь зарегистрирован успешно', type: notificationTypes.success });
+                    setAxiosAuthToken(response.data.token);
                     navigate('/');
                 } else {
                     openNotification({ message: 'Ошибка регистрации, попробуйте снова', type: notificationTypes.error });
