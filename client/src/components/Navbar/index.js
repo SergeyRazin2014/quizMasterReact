@@ -4,17 +4,21 @@ import { A, navigate } from 'hookrouter';
 import { useIsAuth, useCurrentUser } from 'src/redux/reducers/authReducer';
 import { setAxiosAuthToken } from 'src/utils/setAxiosAuthToken';
 import { userRoles } from 'src/common/userRoles';
+import { types } from 'src/redux/reducers/types';
 
 import './navbar.css';
+import { useDispatch } from 'react-redux';
 
 const Navbar = () => {
 
+  const dispatch = useDispatch();
   const isAuth = useIsAuth();
   const currentUser = useCurrentUser();
   const isAdmin = currentUser && currentUser.role === userRoles.admin;
 
   const logout = () => {
     setAxiosAuthToken('');
+    dispatch({ type: types.LOGOUT });
     navigate('/login');
   };
 

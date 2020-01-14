@@ -13,7 +13,7 @@ import { LoginForm } from './components/Auth/Login';
 import { RegisterForm } from './components/Auth/Register';
 import { userRoles } from './common/userRoles';
 
-const Router = {
+const adminRouter = {
 	'/': () => <Home />,
 	'/quiz/:id': ({ id }) => <Quiz id={id} />,
 	'/admin/categories': () => <Categories />,
@@ -41,7 +41,7 @@ const userRouter = {
 
 const getRouter = (userRole) => {
 	if (userRole === userRoles.admin) {
-		return Router;
+		return adminRouter;
 	}
 	return userRouter;
 

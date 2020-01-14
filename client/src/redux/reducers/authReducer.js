@@ -29,6 +29,7 @@ export default (state = initialState, action) => {
                 isLoaded: true,
                 user: payload
             };
+        case types.LOGOUT:
         case types.AUTH_ERROR:
             return {
                 ...state,

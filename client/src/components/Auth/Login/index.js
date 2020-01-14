@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import { openNotification, notificationTypes } from 'src/components/ui-kit/Modal/Notification';
 import { navigate, A } from 'hookrouter';

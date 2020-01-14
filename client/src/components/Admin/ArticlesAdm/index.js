@@ -150,12 +150,13 @@ export const ArticlesAdm = () => {
 
     return (
         <Box mt={10} ml={20} mr={20}>
-            <Table size="small" bordered pagination={false} dataSource={articles} columns={columnsArticles} />
-            <Box mt={10}>
+            <Box mt={10} mb={10}>
                 <Popover placement="topLeft" content="Добавить статью">
                     <Button type="primary" shape="circle-outline" icon="plus" onClick={() => navigate('/admin/addArticle')} />
                 </Popover>
             </Box>
+            <Table size="small" bordered pagination={false} dataSource={articles} columns={columnsArticles} />
+
         </Box>
     );
 };
