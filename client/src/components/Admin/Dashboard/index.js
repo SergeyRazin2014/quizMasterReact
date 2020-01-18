@@ -5,7 +5,7 @@ import { Container } from 'src/components/ui-kit/Container';
 
 export const Dashboard = () => {
 
-    const itemList = [{ name: 'categories', title: 'Категории' }, { name: 'quizes', title: 'Тесты' }, { name: 'articles', title: 'Статьи' }];
+    const itemList = [{ name: 'categoriesAdm', title: 'Категории' }, { name: 'quizes', title: 'Тесты' }, { name: 'articles', title: 'Статьи' }];
 
     return (
         <Container>

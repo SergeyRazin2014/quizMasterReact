@@ -29,6 +29,8 @@ router.delete('/deleteQuiz/:id', auth, quizController.deleteQuizById)
 // категории
 router.get('/getAllCategories', auth, categoryController.getAllCategories);
 router.post('/addCategory', auth, categoryController.addCategory);
+router.post('/updateCategory', auth, categoryController.updateCategory);
+router.get('/category/:id', auth, categoryController.getCategoryById)
 
 // статьи
 router.post('/addArticle', auth, articleController.addArticle);

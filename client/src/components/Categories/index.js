@@ -40,7 +40,6 @@ const Categories = () => {
 	const categoriesElements = renderCategories(rootCategory);
 
 	return (
-
 		<Tree
 			onSelect={selectedCategoriesIds => {
 
@@ -64,7 +63,6 @@ const Categories = () => {
 		>
 			{categoriesElements}
 		</Tree >
-
 	);
 };
 

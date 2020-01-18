@@ -12,6 +12,8 @@ import { ArticleShow } from './components/Article/ArticleShow';
 import { LoginForm } from './components/Auth/Login';
 import { RegisterForm } from './components/Auth/Register';
 import { userRoles } from './common/userRoles';
+import { CategoriesAdm } from 'src/components/Admin/CategoriesAdm';
+import { CategoryAdm } from './components/Admin/CategoryAdm';
 
 const adminRouter = {
 	'/': () => <Home />,
@@ -27,7 +29,10 @@ const adminRouter = {
 	'/articleShow/:id': ({ id }) => <ArticleShow articleId={id} />,
 	'/admin/addArticle': () => <ArticleAdm articleId={null} />,
 	'/login': () => <LoginForm />,
-	'/register': () => <RegisterForm />
+	'/register': () => <RegisterForm />,
+	'/admin/categoriesAdm': () => <CategoriesAdm />,
+	'/admin/updateCategory/:id': ({ id }) => <CategoryAdm categoryId={id} />,
+	'/admin/addCategory': () => <CategoryAdm />
 };
 
 const userRouter = {
@@ -36,7 +41,7 @@ const userRouter = {
 	'/selectQuiz': () => <SelectQuiz />,
 	'/articleShow/:id': ({ id }) => <ArticleShow articleId={id} />,
 	'/login': () => <LoginForm />,
-	'/register': () => <RegisterForm />
+	'/register': () => <RegisterForm />,
 };
 
 const getRouter = (userRole) => {

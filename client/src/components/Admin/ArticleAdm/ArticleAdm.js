@@ -8,29 +8,14 @@ import SunEditor, { buttonList } from 'suneditor-react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'suneditor/dist/css/suneditor.min.css';
 import { navigate } from 'hookrouter';
-import { openNotification, notificationTypes } from 'src/components/ui-kit/Modal/Notification';
 import { Spinner } from 'src/components/ui-kit/Spinner';
+import { showSaveResult } from 'src/common/showSaveResult';
 
 export const ArticleAdm = ({ articleId: _id }) => {
     const { article, setArticle, isLoaded } = useArticle({ articleId: _id });
 
     const changeArticleTitle = (e) => {
         setArticle({ ...article, title: e.target.value });
-    };
-
-    const showSaveResult = (response) => {
-
-        if (response.status === 200 && !response.data.errors) {
-            openNotification({ message: 'статья успешно сохранена', type: notificationTypes.success });
-            return;
-        }
-
-        if (response.data && response.data.errors && response.data.errors.text) {
-            openNotification({ message: `Ошибка сохранения статьи: ${response.data.errors.text.message}`, type: notificationTypes.error });
-        } else {
-            openNotification({ message: `Ошибка сохранения статьи`, description: '', type: notificationTypes.error });
-        }
-
     };
 
     const handleSubmit = (e) => {
@@ -42,11 +27,11 @@ export const ArticleAdm = ({ articleId: _id }) => {
 
         if (_id) {
             api.post('/updateArticle', article).then(response => {
-                showSaveResult(response);
+                showSaveResult(response, 'статья успешно сохранена');
             });
         } else {
             api.post('/addArticle', article).then(response => {
-                showSaveResult(response);
+                showSaveResult(response, 'статья успешно сохранена');
             });
         }
     };
