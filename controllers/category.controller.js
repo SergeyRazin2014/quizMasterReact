@@ -46,12 +46,23 @@ module.exports = {
     },
     getCategoryById: async (req, res) => {
         try {
-			let categoryId = req.params['id'];
-			const find = await CategoryModel.findOne({ _id: categoryId });
-			res.json(find);
-		} catch (err) {
-			console.log(err);
-			res.send('error:', err.message);
-		}
+            let categoryId = req.params['id'];
+            const find = await CategoryModel.findOne({ _id: categoryId });
+            res.json(find);
+        } catch (err) {
+            console.log(err);
+            res.send('error:', err.message);
+        }
+    },
+    deleteCategory: async (req, res) => {
+        try {
+            const categoryId = req.params["id"];
+            const category = await CategoryModel.findOneAndDelete({ _id: categoryId })
+            res.json(category);
+        } catch (err) {
+            console.log(err);
+            res.json(err);
+        }
     }
+
 }

@@ -9,9 +9,9 @@ export const showSaveResult = (response, message) => {
     }
 
     if (response.data && response.data.errors && response.data.errors.text) {
-        openNotification({ message: `Ошибка сохранения данных: ${response.data.errors.text.message}`, type: notificationTypes.error });
+        openNotification({ message: `Ошибка : ${response.data.errors.text.message}`, type: notificationTypes.error });
     } else {
-        openNotification({ message: `Ошибка сохранения данных`, description: '', type: notificationTypes.error });
+        openNotification({ message: `Ошибка :`, description: '', type: notificationTypes.error });
     }
 
 };

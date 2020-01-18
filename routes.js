@@ -30,7 +30,8 @@ router.delete('/deleteQuiz/:id', auth, quizController.deleteQuizById)
 router.get('/getAllCategories', auth, categoryController.getAllCategories);
 router.post('/addCategory', auth, categoryController.addCategory);
 router.post('/updateCategory', auth, categoryController.updateCategory);
-router.get('/category/:id', auth, categoryController.getCategoryById)
+router.get('/category/:id', auth, categoryController.getCategoryById);
+router.delete('/deleteCategory/:id', auth, categoryController.deleteCategory);
 
 // статьи
 router.post('/addArticle', auth, articleController.addArticle);
