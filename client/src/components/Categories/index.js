@@ -30,6 +30,11 @@ const Categories = () => {
 	}
 
 	const renderCategories = (rootCategory) => {
+
+		if (!rootCategory) {
+			return null;
+		}
+
 		return (
 			<TreeNode title={<span className="categoryItem">{rootCategory.title}</span>} key={rootCategory._id}>
 				{rootCategory.childOb.map(x => renderCategories(x))}

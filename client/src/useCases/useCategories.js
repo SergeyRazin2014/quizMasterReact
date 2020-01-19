@@ -38,7 +38,7 @@ export const useCategories = () => {
 
             const allChildrenIds = allCategories.map(x => x.children).flat();
             const topLevelCategories = allCategories.filter(cat => allChildrenIds.every(childId => childId !== cat._id));
-            const rootCategory = { title: "Выберите категорию", childOb: topLevelCategories, isRoot: true, children: topLevelCategories };
+            const rootCategory = {_id: "root", title: "Выберите категорию", childOb: topLevelCategories, isRoot: true, children: topLevelCategories };
 
             setRootCategory(rootCategory);
             dispatch({ type: types.ROOT_CATEGORY, payload: rootCategory });

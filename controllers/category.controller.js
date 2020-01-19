@@ -49,11 +49,9 @@ module.exports = {
         try {
             const allCategory = req.body;
 
-            // const resultArr = [];
             for (let i = 0; i < allCategory.length; i++) {
                 const category = allCategory[i];
                 await CategoryModel.findOneAndUpdate({ _id: category._id }, category);
-                // resultArr.push(result);
             }
 
             res.json({ message: "Катеории сохранены успешно" });

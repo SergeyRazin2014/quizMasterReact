@@ -10,6 +10,7 @@ import { A, navigate } from 'hookrouter';
 import { openNotification, notificationTypes } from 'src/components/ui-kit/Modal/Notification';
 import { api } from 'src/api';
 import { showSaveResult } from 'src/common/showSaveResult';
+import { modalStatuses, showConfirm } from 'src/components/ui-kit/Modal/Confirm';
 
 export const CategoriesAdm = () => {
 
@@ -21,25 +22,37 @@ export const CategoriesAdm = () => {
     }
 
     const handleDelete = (category) => {
-        if (category.children && category.children.length > 0) {
-            openNotification({ message: `Категорию ${category.title} удалить нельзя, т.к. она содержит дочерние категории, удалите сначала все дочерние категории!`, type: notificationTypes.error });
-            return;
-        }
+        showConfirm({ title: "Вы действительно хотите удалить категорию?" }).then((status) => {
+            if (status === modalStatuses.ok) {
+                if (category.children && category.children.length > 0) {
+                    openNotification({ message: `Категорию ${category.title} удалить нельзя, т.к. она содержит дочерние категории, удалите сначала все дочерние категории!`, type: notificationTypes.error });
+                    return;
+                }
 
-        api.delete(`/deleteCategory/${category._id}`).then(response => {
-            if (response.status === 200) {
-                showSaveResult(response, "Категория удалена успешно");
-                location.reload();
-            } else {
-                openNotification({ message: "Ошибка удаление категории", type: notificationTypes.error });
+                api.delete(`/deleteCategory/${category._id}`).then(response => {
+                    if (response.status === 200) {
+                        showSaveResult(response, "Категория удалена успешно");
+                        location.reload();
+                    } else {
+                        openNotification({ message: "Ошибка удаление категории", type: notificationTypes.error });
+                    }
+                }).catch(err => {
+                    openNotification({ message: "Ошибка удаление категории", type: notificationTypes.error });
+                });
             }
-        }).catch(err => {
-            openNotification({ message: "Ошибка удаление категории", type: notificationTypes.error });
         });
+
+
+
+
     };
 
 
     const renderCategories = (category) => {
+
+        if (!category) {
+            return null;
+        }
 
         const content = (
             <div>
