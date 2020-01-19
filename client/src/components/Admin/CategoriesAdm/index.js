@@ -80,16 +80,21 @@ export const CategoriesAdm = () => {
         // найти категорию с ключем dropKey
         const dropCategory = allCategories.find(x => x._id === dropKey);
 
-        //  в ее children положить dragKey
-        dropCategory.children.push(dragKey);
-
-        debugger;
+        if (dropCategory) {
+            //  в ее children положить dragKey
+            dropCategory.children.push(dragKey);
+        }
 
         setAllCategories([...allCategories]);
+    };
 
-    }
-
-
+    const handleSave = () => {
+        api.post('/updateAllCategories', allCategories).then(response => {
+            showSaveResult(response, "Категории сохранены успешно");
+        }).catch(err => {
+            openNotification({ message: "Ошибка сохранения категорий", type: notificationTypes.error });
+        });
+    };
 
     return (
         <Container>
@@ -101,6 +106,9 @@ export const CategoriesAdm = () => {
             <Tree draggable onDrop={onDrop} >
                 {renderCategories(rootCategory)}
             </Tree >
+            <Box mt={20}>
+                <Button onClick={handleSave} type="primary" >Сохранить</Button>
+            </Box>
 
         </Container>
     );

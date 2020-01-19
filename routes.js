@@ -30,6 +30,7 @@ router.delete('/deleteQuiz/:id', auth, quizController.deleteQuizById)
 router.get('/getAllCategories', auth, categoryController.getAllCategories);
 router.post('/addCategory', auth, categoryController.addCategory);
 router.post('/updateCategory', auth, categoryController.updateCategory);
+router.post('/updateAllCategories', auth, categoryController.updateAllCategories);
 router.get('/category/:id', auth, categoryController.getCategoryById);
 router.delete('/deleteCategory/:id', auth, categoryController.deleteCategory);
 

@@ -44,6 +44,27 @@ module.exports = {
             res.send('error: ', err.message);
         }
     },
+
+    updateAllCategories: async (req, res) => {
+        try {
+            const allCategory = req.body;
+
+            // const resultArr = [];
+            for (let i = 0; i < allCategory.length; i++) {
+                const category = allCategory[i];
+                await CategoryModel.findOneAndUpdate({ _id: category._id }, category);
+                // resultArr.push(result);
+            }
+
+            res.json({ message: "Катеории сохранены успешно" });
+
+        } catch (err) {
+            console.log(err);
+            res.send('error', err.message);
+        }
+
+    },
+
     getCategoryById: async (req, res) => {
         try {
             let categoryId = req.params['id'];
