@@ -14,7 +14,7 @@ import { showSaveResult } from 'src/common/showSaveResult';
 export const CategoriesAdm = () => {
 
     // const { allCategories, isLoaded } = useCategoriesList();
-    const { rootCategory, allCategories, isLoaded } = useCategories();
+    const { rootCategory, setAllCategories, allCategories, isLoaded } = useCategories();
 
     if (!isLoaded) {
         return <Spinner />;
@@ -38,6 +38,7 @@ export const CategoriesAdm = () => {
         });
     };
 
+
     const renderCategories = (category) => {
 
         const content = (
@@ -49,14 +50,46 @@ export const CategoriesAdm = () => {
             </div>
         );
 
+
+        let nodeTitle = (<Popover trigger="click" content={content}><span className="categoryItem"> {category.title} </span></Popover>);
+
+        if (category.isRoot) {
+            nodeTitle = (<span className="categoryItem"> {category.title} </span>);
+        }
+
+
         return (
-            <Tree.TreeNode title={<Popover trigger="click" content={content}><span className="categoryItem"> {category.title} </span></Popover>} key={category._id}>
+            <Tree.TreeNode title={nodeTitle} key={category._id}>
                 {category.childOb.map(x => renderCategories(x))}
             </Tree.TreeNode>
         );
     };
 
-    const categoriesElements = renderCategories(rootCategory);
+    const onDrop = (info) => {
+        const dragKey = info.dragNode.props.eventKey;
+        const dropKey = info.node.props.eventKey;
+
+        // найти категорию с dragKey
+        // const dragCategory = allCategories.find(x => x._id === dragKey);
+
+        for (let i = 0; i < allCategories.length; i++) {
+            const categoryItem = allCategories[i];
+            categoryItem.children = categoryItem.children.filter(id => id !== dragKey);
+        }
+
+        // найти категорию с ключем dropKey
+        const dropCategory = allCategories.find(x => x._id === dropKey);
+
+        //  в ее children положить dragKey
+        dropCategory.children.push(dragKey);
+
+        debugger;
+
+        setAllCategories([...allCategories]);
+
+    }
+
+
 
     return (
         <Container>
@@ -65,8 +98,8 @@ export const CategoriesAdm = () => {
                     <Button type="primary" shape="circle-outline" icon="plus" onClick={() => navigate('/admin/addCategory')} />
                 </Popover>
             </Box>
-            <Tree draggable>
-                {categoriesElements}
+            <Tree draggable onDrop={onDrop} >
+                {renderCategories(rootCategory)}
             </Tree >
 
         </Container>

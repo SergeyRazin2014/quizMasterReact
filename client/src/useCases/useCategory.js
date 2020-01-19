@@ -3,8 +3,6 @@ import { api } from "src/api";
 
 export const useCategory = ({ id }) => {
 
-    debugger;
-
     const [category, setCategory] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
 
