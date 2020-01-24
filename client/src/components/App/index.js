@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import getRouter from '../../router';
 import Navbar from '../Navbar';
 import NoPageFound from 'src/components/NoPageFound';
+import { LoginForm } from 'src/components/Auth/Login';
 
 import store from '../../redux/store';
 import { setAxiosAuthToken } from 'src/utils/setAxiosAuthToken';
@@ -46,7 +47,7 @@ const App = () => {
 		<Provider store={store}>
 			<div>
 				<Navbar />
-				{routeResult || <NoPageFound />}
+				{routeResult || <LoginForm />}
 			</div>
 		</Provider>
 	);

@@ -1,5 +1,5 @@
 {
-    // "mongoURI": "mongodb://localhost:27017/quiz-master",
-    "mongoURI": "mongodb://admin:gfhjkmq1@ds239936.mlab.com:39936/quizmaster",
+    "mongoURI": "mongodb://localhost:27017/quiz-master",
+    // "mongoURI": "mongodb://admin:gfhjkmq1@ds239936.mlab.com:39936/quizmaster",
     "jwtSecret": "asp0ewtqdsga8adggadgsdtewt35!667"
 }

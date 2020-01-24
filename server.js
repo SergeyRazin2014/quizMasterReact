@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const connectDB = require('./config/db');
 const path = require('path');
+const { execute } = require('./jsonParser');
 
 // подклюение к монго
 connectDB();
@@ -22,3 +23,7 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
 	console.log(`Server started on port ${PORT}`);
 });
+
+// execute().then(() => {
+// 	console.log('IMPORT DONE----------------');
+// })

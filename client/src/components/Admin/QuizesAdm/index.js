@@ -2,7 +2,7 @@
 /* eslint-disable no-restricted-globals */
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
-import { Table, Input, Button, Icon, Popover } from 'antd';
+import { Table, Input, Button, Icon, Popover, message } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { useQuizTitles } from 'src/useCases/useQuizTitles';
 import { A, navigate } from 'hookrouter';
@@ -122,10 +122,20 @@ export const QuizesAdm = () => {
         },
 
         {
-            title: 'id',
+            title: 'Ссылка',
             dataIndex: '_id',
             key: '_id',
             ...getColumnSearchProps('_id'),
+            render: (text, record)=>{
+                const ref = `/quiz/${record._id}`;
+                return (
+                    <p style={{ display: 'flex', justifyContent: 'space-between' }}>{ref} <Button icon="copy" onClick={() => {
+                        navigator.clipboard.writeText(ref).then(() => {
+                            message.success('скопировал в буфер: ' + ref)
+                        });
+                    }} /></p>
+                );
+            }
         },
         {
             title: '',

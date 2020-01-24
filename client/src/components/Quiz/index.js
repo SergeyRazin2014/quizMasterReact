@@ -79,7 +79,7 @@ const Quiz = (props) => {
 				{findedDiagnoz && <Box mt={10} ><SunEditorShow text={findedDiagnoz.text} /></Box>}
 				{!findedDiagnoz && !hasQuestions && < Box mt={10} ><SunEditorShow text="<strong>Диагноз определить не удалось, обратитесь к врачу.</strong>" /></Box>}
 			</Box>
-			{!hasQuestions &&
+			{findedDiagnoz &&
 				<Box mt={10}>
 					<Button type="primary" onClick={() => window.print()} >Печать</Button>
 					<Button style={{ marginLeft: "10px" }} type="primary" onClick={() => navigate('/')} >Завершить</Button>
