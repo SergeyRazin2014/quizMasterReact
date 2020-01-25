@@ -4,18 +4,20 @@ import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import { Table, Input, Button, Icon, Popover, message } from 'antd';
 import Highlighter from 'react-highlight-words';
-import { useQuizTitles } from 'src/useCases/useQuizTitles';
+import { useAllQuizes } from 'src/useCases/useAllQuizes';
 import { A, navigate } from 'hookrouter';
 import { api } from 'src/api';
 import { Box } from 'src/components/ui-kit/Box';
 import { showConfirm, modalStatuses } from 'src/components/ui-kit/Modal/Confirm';
 import { Spinner } from 'src/components/ui-kit/Spinner';
+import { useDiagnozesKeyNumbersAndCorrect } from 'src/components/Admin/QuizAdm/common/useDiagnozesKeyNumbersAndCorrect';
 
 
 export const QuizesAdm = () => {
 
-    const { isLoaded, quizTitles } = useQuizTitles();
+    const { isLoaded, allQuizes } = useAllQuizes();
     const [searchInfo, setSearchInfo] = useState({});
+    const { useCase: setDiagnozesKeyNumbersAndCorrect } = useDiagnozesKeyNumbersAndCorrect();
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
         confirm();
@@ -90,10 +92,12 @@ export const QuizesAdm = () => {
         return <Spinner />;
     }
 
-    quizTitles.forEach((x, index) => {
-        x.key = x._id;
-        x.isCorrectStr = x.isCorrect ? 'Да' : 'Нет';
-        x.number = index + 1;
+    allQuizes.forEach((quiz, index) => {
+        quiz.key = quiz._id;
+        quiz.isCorrectStr = 'Да';
+        quiz.number = index + 1;
+
+        setDiagnozesKeyNumbersAndCorrect(quiz);
     });
 
     const columns = [
@@ -119,6 +123,9 @@ export const QuizesAdm = () => {
             dataIndex: 'isCorrectStr',
             key: 'isCorrectStr',
             ...getColumnSearchProps('isCorrectStr'),
+            render: (text, record) => {
+                return record.isCorrectStr;
+            }
         },
 
         {
@@ -126,12 +133,12 @@ export const QuizesAdm = () => {
             dataIndex: '_id',
             key: '_id',
             ...getColumnSearchProps('_id'),
-            render: (text, record)=>{
+            render: (text, record) => {
                 const ref = `/quiz/${record._id}`;
                 return (
                     <p style={{ display: 'flex', justifyContent: 'space-between' }}>{ref} <Button icon="copy" onClick={() => {
                         navigator.clipboard.writeText(ref).then(() => {
-                            message.success('скопировал в буфер: ' + ref)
+                            message.success('скопировал в буфер: ' + ref);
                         });
                     }} /></p>
                 );
@@ -165,7 +172,7 @@ export const QuizesAdm = () => {
                     <Button type="primary" shape="circle-outline" icon="plus" onClick={() => navigate('/admin/addQuiz')} />
                 </Popover>
                 <Box mt={10} >
-                    <Table bordered size="small" columns={columns} dataSource={quizTitles} pagination={false} />
+                    <Table bordered size="small" columns={columns} dataSource={allQuizes} pagination={false} />
                 </Box>
             </Box>
         </>

@@ -11,6 +11,7 @@ import { navigate } from 'hookrouter';
 import { showConfirm, modalStatuses } from 'src/components/ui-kit/Modal/Confirm';
 import { openNotification, notificationTypes } from 'src/components/ui-kit/Modal/Notification';
 import { Spinner } from 'src/components/ui-kit/Spinner';
+import { useDiagnozesKeyNumbersAndCorrect } from 'src/components/Admin/QuizAdm/common/useDiagnozesKeyNumbersAndCorrect';
 
 
 export const QuizUpdateForm = (props) => {
@@ -19,6 +20,7 @@ export const QuizUpdateForm = (props) => {
     const { quiz, setQuiz, isLoaded: isQuizLoaded } = useQuiz({ _id });
     const { allCategories, isLoaded: isCategoryLoaded } = useCategories();
     const [selectedDiagnoz, setSelectedDiagnoz] = useState(null);
+    const { useCase: setDiagnozesKeyNumbersAndCorrect } = useDiagnozesKeyNumbersAndCorrect();
 
     const isLoaded = isQuizLoaded && isCategoryLoaded;
 
@@ -32,21 +34,7 @@ export const QuizUpdateForm = (props) => {
         q.number = index + 1;
     });
 
-    // ключи для диагнозов
-    quiz.diagnozes.forEach((diag, index) => {
-        diag.key = diag._id;
-        diag.number = index + 1;
-
-        diag.answerKey = '';
-        diag.answers.forEach(a => {
-            const findedQuestion = quiz.questions.find(question => question._id === a.questionId);
-            if (!findedQuestion) {
-                return;
-            }
-            const resultStr = `${findedQuestion.number}: ${a.status ? 'Да' : 'Нет'}`;
-            diag.answerKey += ' ' + resultStr;
-        });
-    });
+    setDiagnozesKeyNumbersAndCorrect(quiz);
 
     const showSaveResult = (response) => {
         if (response.status === 200 && !response.data.errors) {
@@ -183,6 +171,9 @@ export const QuizUpdateForm = (props) => {
             dataIndex: 'answerKey',
             key: 'answerKey',
             width: '20%',
+            render: (text, record) => {
+                return record.isCorrect ? <span>{text}</span> : <span style={{ color: "red" }} >{text}</span>;
+            }
         },
         {
             title: 'Id',

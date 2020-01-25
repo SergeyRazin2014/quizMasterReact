@@ -67,7 +67,11 @@ module.exports = {
 	},
 	async getQuizTitles(req, res) {
 		//выбираем тесты согласно списка номеров и берем только номер и имя теста
-		let quizes = await Quiz.find({}, { number: 1, title: 1, isCorrect: 1, categoryId: 1 });
+		let quizes = await Quiz.find({}, { number: 1, title: 1, categoryId: 1 });
 		res.json(quizes);
 	},
+	async getAllQuizes(req, res) {
+		let quizes = await Quiz.find({});
+		res.json(quizes);
+	}
 };

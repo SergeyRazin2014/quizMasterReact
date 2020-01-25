@@ -24,6 +24,7 @@ router.post('/addQuiz', auth, quizController.addQiuz);
 router.post('/updateQuiz', auth, quizController.updateQuiz);
 router.get('/getQuizById/:id', auth, quizController.getQuizById);
 router.get('/getQuizTitles', auth, quizController.getQuizTitles);
+router.get('/getAllQuizes', auth, quizController.getAllQuizes);
 router.delete('/deleteQuiz/:id', auth, quizController.deleteQuizById)
 
 // категории

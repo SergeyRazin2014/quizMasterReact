@@ -7,6 +7,7 @@ import 'suneditor/dist/css/suneditor.min.css';
 
 
 export const DiagnozForm = ({ diagnoz, setSelectedDiagnoz, quiz, setQuiz }) => {
+
     const [diagClone, setDiagClone] = useState(null);
 
     useEffect(() => {
