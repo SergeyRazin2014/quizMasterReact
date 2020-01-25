@@ -124,7 +124,7 @@ export const QuizesAdm = () => {
             key: 'isCorrectStr',
             ...getColumnSearchProps('isCorrectStr'),
             render: (text, record) => {
-                return record.isCorrectStr;
+                return record.isCorrectStr === 'Да' ? <span>{record.isCorrectStr}</span> : <span style={{ color: "red" }} >{record.isCorrectStr}</span>;
             }
         },
 
