@@ -29,6 +29,7 @@
         "quotes": 0,
         "no-extra-boolean-cast": 0,
         "operator-linebreak": 0,
-        "prefer-destructuring":0
+        "prefer-destructuring": 0,
+        "consistent-return": 0
     }
 }

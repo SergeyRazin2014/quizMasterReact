@@ -94,9 +94,7 @@ export const QuizesAdm = () => {
 
     allQuizes.forEach((quiz, index) => {
         quiz.key = quiz._id;
-        quiz.isCorrectStr = 'Да';
         quiz.number = index + 1;
-
         setDiagnozesKeyNumbersAndCorrect(quiz);
     });
 
