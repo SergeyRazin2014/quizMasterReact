@@ -6,8 +6,9 @@ const isDiagCorrect = (diagnoz) => {
     }
 
     let result = true;
-    diagnoz.answerKey.replace(/[^\d]/g, '').split('').forEach((x, index) => {
-        if (+x !== index + 1) {
+
+    diagnoz.answers.forEach((a, index) => {
+        if (a.number !== index + 1) {
             result = false;
         }
     });
@@ -42,7 +43,6 @@ const addNumberToAnswers = (diag, quiz) => {
 
 export const useDiagnozesKeyNumbersAndCorrect = () => {
     const useCase = useCallback((quiz) => {
-
         quiz.isCorrectStr = 'Да';
         quiz.diagnozes.forEach((diag, index) => {
             diag.key = diag._id;
