@@ -26,6 +26,7 @@ const Navbar = () => {
     <Layout>
       <Layout.Header className="custom">
         <A href="/" className="navItem" >Главная</A>
+        <A href="/help" className="navItem" >Помощь</A>
         {isAdmin && (<A href="/admin" className="navItem" >Управление</A>)}
         {isAuth && (<a href="#" onClick={logout} className="navItem" >Выход</a>)}
         {!isAuth && (<A href="/login" className="navItem" >Войти</A>)}

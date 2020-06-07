@@ -14,6 +14,7 @@ import { RegisterForm } from './components/Auth/Register';
 import { userRoles } from './common/userRoles';
 import { CategoriesAdm } from 'src/components/Admin/CategoriesAdm';
 import { CategoryAdm } from './components/Admin/CategoryAdm';
+import Help from './components/Help';
 
 const adminRouter = {
 	'/': () => <Home />,
@@ -32,7 +33,8 @@ const adminRouter = {
 	'/register': () => <RegisterForm />,
 	'/admin/categoriesAdm': () => <CategoriesAdm />,
 	'/admin/updateCategory/:id': ({ id }) => <CategoryAdm categoryId={id} />,
-	'/admin/addCategory': () => <CategoryAdm />
+	'/admin/addCategory': () => <CategoryAdm />,
+	'/help': () => <Help />
 };
 
 const userRouter = {
@@ -42,6 +44,7 @@ const userRouter = {
 	'/articleShow/:id': ({ id }) => <ArticleShow articleId={id} />,
 	'/login': () => <LoginForm />,
 	'/register': () => <RegisterForm />,
+	'/help': () => <Help />
 };
 
 const getRouter = (userRole) => {
