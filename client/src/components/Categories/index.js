@@ -7,6 +7,7 @@ import './category.css';
 import { types } from 'src/redux/reducers/types';
 import { useQuizTitles } from 'src/useCases/useQuizTitles';
 import { Spinner } from '../ui-kit/Spinner';
+import { useSelectedCategory } from 'src/redux/reducers/categoryReducer';
 
 const { TreeNode } = Tree;
 
@@ -18,12 +19,20 @@ const Categories = () => {
 
 	const isLoaded = categoryLoaded && quizTitlesLoaded;
 
-	useEffect(() => {
-		return () => {
-			dispatch({ type: types.SELECT_CATEGORY, payload: null });
-			dispatch({ type: types.CATEGORY_QUIZES, payload: null });
-		};
-	}, []);
+	// useEffect(() => {
+	// 	return () => {
+	// 		dispatch({ type: types.SELECT_CATEGORY, payload: null });
+	// 		dispatch({ type: types.CATEGORY_QUIZES, payload: null });
+	// 	};
+	// }, []);
+
+	const currentCategory = useSelectedCategory();
+	let currentCategoryId = null;
+
+	if (currentCategory) {
+		currentCategoryId = currentCategory._id;
+	}
+
 
 	if (!isLoaded) {
 		return <Spinner />;
@@ -46,6 +55,7 @@ const Categories = () => {
 
 	return (
 		<Tree
+			defaultExpandedKeys={[currentCategoryId]}
 			onSelect={selectedCategoriesIds => {
 
 				if (!selectedCategoriesIds || !selectedCategoriesIds.length) {

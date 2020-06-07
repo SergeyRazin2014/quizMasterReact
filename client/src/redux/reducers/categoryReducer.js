@@ -2,11 +2,11 @@ import { useSelector } from 'react-redux';
 import { types } from './types';
 
 // получить выбранную категорию
-export const useSelectedCategoryId = () => {
-    const result = useSelector((store) => {
-        return store.categoryReducer.selectedCategory;
-    });
-    return result;
+export const useSelectedCategory = () => {
+        const result = useSelector((store) => {
+            return store.categoryReducer.selectedCategory;
+        });
+        return result;
 };
 
 // получить загруженные категории

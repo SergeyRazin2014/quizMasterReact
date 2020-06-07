@@ -82,7 +82,7 @@ const Quiz = (props) => {
 			{(findedDiagnoz || !hasQuestions) &&
 				<Box mt={10}>
 					<Button type="primary" onClick={() => window.print()} >Печать</Button>
-					<Button style={{ marginLeft: "10px" }} type="primary" onClick={() => navigate('/')} >Завершить</Button>
+					<Button style={{ marginLeft: "10px" }} type="primary" onClick={() => navigate('/selectQuiz')} >Завершить</Button>
 					<Button style={{ marginLeft: "10px" }} type="primary" onClick={() => location.reload()} >Пройти еще раз</Button>
 				</Box>
 			}
