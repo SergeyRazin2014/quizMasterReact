@@ -1,5 +1,11 @@
 {
+    // дом:
     // "mongoURI": "mongodb://localhost:27017/quiz-master",
-    "mongoURI": "mongodb://admin:gfhjkmq1@ds239936.mlab.com:39936/quizmaster",
+    
+    // mLab (not work):
+    // "mongoURI": "mongodb://admin:gfhjkmq1@ds239936.mlab.com:39936/quizmaster",
+    
+    // atlas
+    "mongoURI": "mongodb://admin:gfhjkmq1@quizmaster-shard-00-00.q8jzm.mongodb.net:27017,quizmaster-shard-00-01.q8jzm.mongodb.net:27017,quizmaster-shard-00-02.q8jzm.mongodb.net:27017/quizmaster?ssl=true&replicaSet=atlas-28m05c-shard-0&authSource=admin&retryWrites=true&w=majority",
     "jwtSecret": "asp0ewtqdsga8adggadgsdtewt35!667"
 }
