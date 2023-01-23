@@ -4,7 +4,7 @@ const connectDB = require('./config/db');
 const path = require('path');
 const { execute } = require('./jsonImport');
 
-// подклюение к монго
+// подклюение к монго.
 connectDB();
 
 app.use(express.json({ limit: '10mb', extended: false }));
