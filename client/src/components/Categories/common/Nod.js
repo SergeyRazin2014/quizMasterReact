@@ -47,7 +47,7 @@ export class Nod {
 			// найти в себе
 			const findSelf = this._findByIdCurrent({ id });
 
-			// найти в детенышах
+			// найти в дочерних
 			const findChild = this._findByIdDeepChildren({ id });
 
 			return [...findSelf, ...findChild];

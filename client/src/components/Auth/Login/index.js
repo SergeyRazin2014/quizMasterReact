@@ -4,7 +4,6 @@ import { openNotification, notificationTypes } from 'src/components/ui-kit/Modal
 import { navigate, A } from 'hookrouter';
 import { Box } from 'src/components/ui-kit/Box';
 import { api } from 'src/api';
-// import { useLocalStorage } from 'src/useCases/useLocalstorage';
 
 import './index.css';
 import 'antd/dist/antd.css';

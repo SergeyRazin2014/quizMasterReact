@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 import { Select } from 'antd';
 import 'antd/dist/antd.css';

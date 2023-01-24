@@ -10,13 +10,13 @@ const auth = require('./middleware/auth');
 
 module.exports = router;
 
-// правила валидации----------------------↓
+// правила валидации
 const addUserRules = [
     check('login', 'Login is required').not().isEmpty(),
     check('password', 'Password is required').not().isEmpty()
 ];
 
-// роуты----------------------------------↓
+// РОУТЫ:
 
 // тесты
 router.get('/getQuizByNumber/:number', auth, quizController.getQuizByNumber);

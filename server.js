@@ -24,6 +24,3 @@ app.listen(PORT, () => {
 	console.log(`Server started on port ${PORT}`);
 });
 
-// execute().then(() => {
-// 	console.log('IMPORT DONE----------------');
-// })

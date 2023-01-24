@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Tree } from 'antd';
 import { useCategories } from 'src/useCases/useCategories';
@@ -18,13 +18,6 @@ const Categories = () => {
 	const { quizTitles, isLoaded: quizTitlesLoaded } = useQuizTitles();
 
 	const isLoaded = categoryLoaded && quizTitlesLoaded;
-
-	// useEffect(() => {
-	// 	return () => {
-	// 		dispatch({ type: types.SELECT_CATEGORY, payload: null });
-	// 		dispatch({ type: types.CATEGORY_QUIZES, payload: null });
-	// 	};
-	// }, []);
 
 	const currentCategory = useSelectedCategory();
 	let currentCategoryId = null;

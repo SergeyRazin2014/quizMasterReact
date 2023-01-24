@@ -1,10 +1,9 @@
 /* eslint-disable no-restricted-globals */
 import React from 'react';
 import { Container } from 'src/components/ui-kit/Container';
-import { useCategoriesList } from 'src/useCases/useCategoriesList';
 import { Spinner } from 'src/components/ui-kit/Spinner';
 import { useCategories } from 'src/useCases/useCategories';
-import { Table, Tree, Button, Popover, Input, Icon, message } from 'antd';
+import { Tree, Button, Popover } from 'antd';
 import { Box } from 'src/components/ui-kit/Box';
 import { A, navigate } from 'hookrouter';
 import { openNotification, notificationTypes } from 'src/components/ui-kit/Modal/Notification';
@@ -14,7 +13,6 @@ import { modalStatuses, showConfirm } from 'src/components/ui-kit/Modal/Confirm'
 
 export const CategoriesAdm = () => {
 
-    // const { allCategories, isLoaded } = useCategoriesList();
     const { rootCategory, setAllCategories, allCategories, isLoaded } = useCategories();
 
     if (!isLoaded) {
@@ -81,9 +79,6 @@ export const CategoriesAdm = () => {
     const onDrop = (info) => {
         const dragKey = info.dragNode.props.eventKey;
         const dropKey = info.node.props.eventKey;
-
-        // найти категорию с dragKey
-        // const dragCategory = allCategories.find(x => x._id === dragKey);
 
         for (let i = 0; i < allCategories.length; i++) {
             const categoryItem = allCategories[i];

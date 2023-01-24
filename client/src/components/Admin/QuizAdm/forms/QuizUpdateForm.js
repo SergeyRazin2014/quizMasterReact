@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuiz } from 'src/useCases/useQuiz';
 import { Box } from 'src/components/ui-kit/Box';
-import { Input, Table, Button, notification } from 'antd';
+import { Input, Table, Button } from 'antd';
 import { DiagnozForm } from './DiagnozForm';
 import { api } from 'src/api/index';
 import objectid from 'objectid';
@@ -63,7 +63,6 @@ export const QuizUpdateForm = (props) => {
                 showSaveResult(response);
             });
         }
-        // navigate('/admin/quizes');
     };
 
     // изменить заголовок теста
