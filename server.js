@@ -24,3 +24,8 @@ app.listen(PORT, () => {
 	console.log(`Server started on port ${PORT}`);
 });
 
+// используется для импорта всех данных
+// execute().then(() => {
+// 	console.log('IMPORT DONE----------------');
+// })
+
